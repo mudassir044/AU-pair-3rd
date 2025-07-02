@@ -93,76 +93,89 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-950 dark:via-background dark:to-blue-950">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-blue-600/10 dark:from-primary/5 dark:to-blue-600/5"></div>
-        <div className="relative container mx-auto px-4 py-20 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Heart className="w-4 h-4 mr-2" />
-                Trusted by 10,000+ families worldwide
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <div className="inline-flex items-center bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                <span className="hidden sm:inline">
+                  Trusted by 10,000+ families worldwide
+                </span>
+                <span className="sm:hidden">10,000+ families trust us</span>
               </div>
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight">
                 Find Your Perfect
                 <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
                   {" "}
                   Cultural Exchange
                 </span>
-                <br />
+                <span className="hidden sm:inline">
+                  <br />
+                </span>{" "}
                 Match
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
                 Connect with verified host families and experienced au pairs for
                 meaningful cultural exchanges. Safe, trusted, and life-changing
                 experiences await.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 btn-touch"
                 >
-                  <Link href="/auth/register" className="flex items-center">
-                    Get Started Today
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                  <Link
+                    href="/auth/register"
+                    className="flex items-center justify-center"
+                  >
+                    <span className="hidden sm:inline">Get Started Today</span>
+                    <span className="sm:hidden">Get Started</span>
+                    <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                   </Link>
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
                   asChild
-                  className="px-8 py-4 rounded-2xl text-lg font-semibold border-2 hover:bg-primary hover:text-white transition-all duration-300"
+                  className="px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold border-2 hover:bg-primary hover:text-white transition-all duration-300 btn-touch"
                 >
-                  <Link href="#how-it-works" className="flex items-center">
-                    <Play className="mr-2 w-5 h-5" />
-                    Watch Demo
+                  <Link
+                    href="#how-it-works"
+                    className="flex items-center justify-center"
+                  >
+                    <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">Watch Demo</span>
+                    <span className="sm:hidden">Demo</span>
                   </Link>
                 </Button>
               </div>
-              <div className="mt-12 flex items-center justify-center lg:justify-start space-x-8">
+              <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:flex sm:items-center sm:justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-8">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                       {stat.number}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       {stat.label}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="relative">
+            <div className="relative order-1 lg:order-2">
               <div className="relative z-10">
                 <Image
                   src="https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg"
                   alt="Happy family with au pair"
                   width={600}
                   height={400}
-                  className="rounded-3xl shadow-2xl"
+                  className="rounded-2xl sm:rounded-3xl shadow-2xl w-full h-64 sm:h-80 lg:h-96 object-cover"
                   priority
                 />
               </div>
-              <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-primary/20 to-blue-600/20 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
+              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-32 h-32 sm:w-48 sm:h-48 lg:w-72 lg:h-72 bg-gradient-to-br from-primary/20 to-blue-600/20 rounded-full blur-2xl sm:blur-3xl"></div>
+              <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-32 h-32 sm:w-48 sm:h-48 lg:w-72 lg:h-72 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-2xl sm:blur-3xl"></div>
             </div>
           </div>
         </div>
