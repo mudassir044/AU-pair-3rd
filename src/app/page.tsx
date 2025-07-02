@@ -374,93 +374,60 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
+      <footer className="bg-gray-900 text-white py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div className="sm:col-span-2 lg:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-br from-primary to-blue-600 rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">Au Pair Connect</span>
+                <span className="text-lg sm:text-xl font-bold">
+                  Au Pair Connect
+                </span>
               </div>
-              <p className="text-gray-400 mb-6 max-w-md">
+              <p className="text-gray-400 mb-6 max-w-md text-sm sm:text-base">
                 Connecting cultures, families, and experiences worldwide.
                 Building bridges through meaningful cultural exchanges.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-4">
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
                 >
                   Facebook
                 </a>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
                 >
                   Instagram
                 </a>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
                 >
                   Twitter
                 </a>
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">For Au Pairs</h4>
+              <h4 className="font-semibold mb-4 text-sm sm:text-base">
+                For Au Pairs
+              </h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
                   <Link
                     href="/auth/register?role=aupair"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Find Families
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/resources"
-                    className="hover:text-white transition-colors"
-                  >
-                    Resources
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/support"
-                    className="hover:text-white transition-colors"
-                  >
-                    Support
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/safety"
-                    className="hover:text-white transition-colors"
-                  >
-                    Safety Tips
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">For Families</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link
-                    href="/auth/register?role=host"
-                    className="hover:text-white transition-colors"
-                  >
-                    Find Au Pairs
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/how-it-works"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
                   >
                     How It Works
                   </Link>
@@ -468,7 +435,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/pricing"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Pricing
                   </Link>
@@ -476,7 +443,46 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/contact"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
+                  >
+                    Support
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4 text-sm sm:text-base">
+                For Families
+              </h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link
+                    href="/auth/register?role=host"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
+                  >
+                    Find Au Pairs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/how-it-works"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
+                  >
+                    How It Works
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pricing"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
+                  >
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    className="hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Contact
                   </Link>
@@ -484,28 +490,28 @@ export default function HomePage() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-center md:text-left">
+          <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-gray-400 text-center sm:text-left text-sm sm:text-base">
               &copy; 2025 Au Pair Connect. All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            <div className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6">
               <Link
                 href="/privacy"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
               >
                 Terms of Service
               </Link>
               <Link
-                href="/cookies"
-                className="text-gray-400 hover:text-white transition-colors"
+                href="/contact"
+                className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base"
               >
-                Cookie Policy
+                Contact
               </Link>
             </div>
           </div>
