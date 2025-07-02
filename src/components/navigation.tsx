@@ -69,13 +69,14 @@ export function Navigation() {
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
-              Au Pair Connect
+            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
+              <span className="hidden sm:inline">Au Pair Connect</span>
+              <span className="sm:hidden">APC</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {user ? (
               <>
                 {navigationItems.map((item) => {
@@ -91,7 +92,7 @@ export function Navigation() {
                       }`}
                     >
                       <Icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <span className="hidden lg:inline">{item.label}</span>
                     </Link>
                   );
                 })}
@@ -99,20 +100,52 @@ export function Navigation() {
             ) : (
               <>
                 <Link
+                  href="/"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/")
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
+                >
+                  Home
+                </Link>
+                <Link
                   href="/about"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/about")
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                 >
                   About
                 </Link>
                 <Link
                   href="/how-it-works"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/how-it-works")
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                 >
                   How it Works
                 </Link>
                 <Link
+                  href="/pricing"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/pricing")
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
+                >
+                  Pricing
+                </Link>
+                <Link
                   href="/contact"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive("/contact")
+                      ? "text-primary"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                 >
                   Contact
                 </Link>
@@ -218,22 +251,56 @@ export function Navigation() {
             ) : (
               <>
                 <Link
+                  href="/"
+                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    isActive("/")
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Home
+                </Link>
+                <Link
                   href="/about"
-                  className="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    isActive("/about")
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   About
                 </Link>
                 <Link
                   href="/how-it-works"
-                  className="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    isActive("/how-it-works")
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   How it Works
                 </Link>
                 <Link
+                  href="/pricing"
+                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    isActive("/pricing")
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Pricing
+                </Link>
+                <Link
                   href="/contact"
-                  className="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                    isActive("/contact")
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Contact
