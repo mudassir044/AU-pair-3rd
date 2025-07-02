@@ -1,0 +1,96 @@
+au-pair is a Next.js project.
+
+Netlify auto-detected Next.js and will use the Next.js Runtime to build and deploy your project.
+
+Read more about deploying with Next.js on Netlify
+
+Deploy log
+
+
+
+
+Maximize log
+Initializing
+Complete
+Building
+Failed
+8:36:36 PM: Netlify Build                                                 
+8:36:36 PM: ────────────────────────────────────────────────────────────────
+8:36:36 PM: ​
+8:36:36 PM: ❯ Version
+8:36:36 PM:   @netlify/build 33.5.0
+8:36:36 PM: ​
+8:36:36 PM: ❯ Flags
+8:36:36 PM:   accountId: 685414adabe1d4ef643dc4a8
+8:36:36 PM:   baseRelDir: true
+8:36:36 PM:   buildId: 686551ed58cbca000893e956
+8:36:36 PM:   deployId: 686551ed58cbca000893e958
+8:36:36 PM: ​
+8:36:36 PM: ❯ Current directory
+8:36:36 PM:   /opt/build/repo
+8:36:36 PM: ​
+8:36:36 PM: ❯ Config file
+8:36:36 PM:   No config file was defined: using default values.
+8:36:36 PM: ​
+8:36:36 PM: ❯ Context
+8:36:36 PM:   production
+8:36:37 PM: ​
+8:36:37 PM: ❯ Installing extensions
+8:36:37 PM:    - simpleanalytics
+8:36:37 PM:    - neon
+8:37:29 PM: ​
+8:37:29 PM: ❯ Using Next.js Runtime - v5.11.4
+8:37:29 PM: ​
+8:37:29 PM: ❯ Loading extensions
+8:37:29 PM:    - simpleanalytics
+8:37:29 PM:    - neon
+8:37:31 PM: No Next.js cache to restore
+8:37:31 PM: ​
+8:37:31 PM: Build command from Netlify app                                
+8:37:31 PM: ────────────────────────────────────────────────────────────────
+8:37:31 PM: ​
+8:37:31 PM: $ npm run build
+8:37:31 PM: > au-pair-frontend@0.1.0 build
+8:37:31 PM: > next build
+8:37:31 PM:    ▲ Next.js 15.1.5
+8:37:31 PM:    - Environments: .env.local
+8:37:31 PM:    Creating an optimized production build ...
+8:37:44 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2
+8:37:40 PM:  ✓ Compiled successfully
+8:37:40 PM:    Linting and checking validity of types ...
+8:37:43 PM: Failed to compile.
+8:37:43 PM: 
+8:37:43 PM: ./src/components/theme-provider.tsx:5:41
+8:37:43 PM: Type error: Cannot find module 'next-themes/dist/types' or its corresponding type declarations.
+8:37:43 PM:   3 | import * as React from "react"
+8:37:43 PM:   4 | import { ThemeProvider as NextThemesProvider } from "next-themes"
+8:37:43 PM: > 5 | import { type ThemeProviderProps } from "next-themes/dist/types"
+8:37:43 PM:     |                                         ^
+8:37:43 PM:   6 |
+8:37:43 PM:   7 | export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+8:37:43 PM:   8 |   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+8:37:43 PM: Static worker exited with code: 1 and signal: null
+8:37:43 PM: ​
+8:37:43 PM: "build.command" failed                                        
+8:37:43 PM: ────────────────────────────────────────────────────────────────
+8:37:43 PM: ​
+8:37:43 PM:   Error message
+8:37:43 PM:   Command failed with exit code 1: npm run build
+8:37:43 PM: ​
+8:37:43 PM:   Error location
+8:37:43 PM:   In Build command from Netlify app:
+8:37:43 PM:   npm run build
+8:37:43 PM: ​
+8:37:43 PM:   Resolved config
+8:37:43 PM:   build:
+8:37:43 PM:     command: npm run build
+8:37:43 PM:     commandOrigin: ui
+8:37:43 PM:     publish: /opt/build/repo/.next
+8:37:43 PM:     publishOrigin: ui
+8:37:43 PM:   plugins:
+8:37:43 PM:     - inputs: {}
+8:37:43 PM:       origin: ui
+8:37:43 PM:       package: "@netlify/plugin-nextjs"
+8:37:44 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+8:37:44 PM: Failing build: Failed to build site
+8:37:44 PM: Finished processing build request in 1m30.089s
