@@ -57,3 +57,84 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Mobile-first responsive text utilities */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+  .text-responsive-3xl {
+    @apply text-3xl sm:text-4xl lg:text-5xl;
+  }
+  .text-responsive-4xl {
+    @apply text-3xl sm:text-4xl lg:text-6xl;
+  }
+
+  /* Mobile-first spacing utilities */
+  .padding-responsive {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  .margin-responsive {
+    @apply m-4 sm:m-6 lg:m-8;
+  }
+  .gap-responsive {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Mobile-first grid utilities */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  .grid-responsive-2 {
+    @apply grid grid-cols-1 lg:grid-cols-2;
+  }
+  .grid-responsive-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+  }
+
+  /* Mobile navigation improvements */
+  .mobile-safe-area {
+    @apply pb-safe-bottom;
+  }
+
+  /* Touch-friendly button sizes */
+  .btn-touch {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Responsive container with proper mobile padding */
+  .container-responsive {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Smooth scrolling for mobile */
+  .scroll-smooth-mobile {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile-friendly card spacing */
+  .card-responsive {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  /* Responsive shadows */
+  .shadow-responsive {
+    @apply shadow-md sm:shadow-lg lg:shadow-xl;
+  }
+}
