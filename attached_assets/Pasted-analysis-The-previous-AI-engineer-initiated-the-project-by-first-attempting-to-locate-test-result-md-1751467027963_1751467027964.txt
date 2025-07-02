@@ -1,0 +1,58 @@
+analysis
+The previous AI engineer initiated the project by first attempting to locate test_result.md, as per instructions, but found it absent. It then performed a directory listing, revealing only a README.md file. Following a detailed project brief from the user, the engineer proposed a comprehensive 5-phase development plan. This plan was subsequently approved by the user, who also clarified the necessity of using mocked data for unavailable backend endpoints and prioritizing Phase 1: Project Setup & Foundation. The engineer then attempted to initialize the Next.js project using create-next-app, which failed. As a fallback, a package.json file was manually created, and the engineer is now in the process of installing dependencies and establishing the remaining project structure.
+
+product requirements
+The goal is to build a stunning, responsive, and complete frontend for an Au Pair ↔ Host Family matching platform. The application should use Next.js (App Router), Tailwind CSS (with custom theme), TypeScript, Axios for API calls, and Socket.io-client for real-time messaging. It is intended for Netlify deployment, requiring a clean /public directory and proper package.json, tsconfig.json, next.config.js for next build. The frontend must integrate with a backend API at https://au-pair.onrender.com.
+
+Key features include:
+
+Landing Page (/) with hero, CTA, how-it-works, testimonials, and footer.
+Authentication Pages (/auth/register, /auth/login) with separate registration for Au Pair/Host Family.
+Dashboard (/dashboard) with profile summary and match suggestions.
+Onboarding Page (/onboarding) with role-based forms (Au Pair: name, age, languages, bio, preferred countries; Host Family: family name, children’s info, location, languages) saving to /api/profiles.
+Matches Page (/matches) displaying potential matches in a grid view with profile picture, score, short bio, and action buttons.
+Messages Page (/messages) for real-time conversations using Socket.io-client.
+Bookings Page (/bookings) with calendar for scheduling meetings.
+Documents Page (/documents) for uploading/viewing PDFs, ID cards, with status tracking.
+Admin Dashboard (visible to admin role) with user, documents, and stats tabs for user activation/deactivation and document verification.
+404 and Error Pages.
+Design guidelines include dark/light modes, mobile responsiveness, Tailwind @apply classes, cards, modals, dropdowns, optional Framer Motion animations, and Google Fonts. Environment variable NEXT_PUBLIC_API_URL must be configured. The frontend should be clean, reusable, modular, and production-ready, initially using mocked data for unavailable backend endpoints.
+
+key technical concepts
+Next.js (App Router): Frontend framework.
+Tailwind CSS: Utility-first CSS framework for styling.
+TypeScript: Typed superset of JavaScript for robust code.
+Axios: Promise-based HTTP client for API calls.
+Socket.io-client: Library for real-time, bidirectional event-based communication.
+React Context / Zustand: For state management.
+Mocked Data: Temporary data for backend endpoints not yet live.
+Netlify: Target deployment platform.
+code architecture
+The project is set up as a frontend-only application, intended to integrate with a separate backend API. At this stage, the directory structure is minimal, as the Next.js project initialization is still in progress.
+
+Current Directory Structure:
+
+/app
+├── package.json
+└── README.md
+package.json: This file is critical for defining the project's metadata, scripts, and dependencies. It was manually created by the AI engineer after the create-next-app command failed. Its presence is the first step towards installing the necessary Node.js dependencies for a Next.js application. Currently, it holds basic project information and no specific dependencies yet, but prepares the project for yarn install.
+
+README.md: This file serves as the project's primary documentation. At present, it contains only a placeholder # AU-pair-3rd, indicating a fresh project start. It will eventually be populated with project setup instructions, usage guidelines, and other relevant information.
+
+pending tasks
+Complete Next.js project initialization (install dependencies and create full project structure).
+Configure Tailwind CSS.
+Set up Axios instance with NEXT_PUBLIC_API_URL.
+Implement global authentication context.
+Set up Socket.io client.
+Develop the Landing Page UI.
+Develop the Authentication Pages (Login/Register) UI.
+Implement mocked data for backend endpoints.
+Develop all other specified pages and features (Dashboard, Onboarding, Matches, Messages, Bookings, Documents, Admin).
+Implement responsive design and dark/light modes.
+Configure for Netlify deployment.
+current work
+The previous AI engineer is currently in Phase 1: Project Setup & Foundation of the development plan. The initial attempt to set up the Next.js project using create-next-app failed. As a recovery step, the engineer has manually created a basic package.json file in the root /app directory to initiate the project structure. The immediate task at hand is to install the necessary Node.js dependencies defined in this package.json and then proceed with creating the full Next.js application structure, including setting up TypeScript and configuring Tailwind CSS. The product is currently in a very nascent state, with only a package.json and README.md present, and the core Next.js framework not yet fully established.
+
+optional next step
+Install the project dependencies and complete the initial Next.js project structure setup with Tailwind CSS configured.
