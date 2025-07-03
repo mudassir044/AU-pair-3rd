@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { authAPI } from "@/lib/api";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const [step, setStep] = useState(1);
   const [selectedRole, setSelectedRole] = useState<
     "host_family" | "au_pair" | null
@@ -530,5 +530,26 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-950 dark:via-background dark:to-blue-950 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+              <Heart className="w-8 h-8 text-white" />
+            </div>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              Loading...
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <RegisterForm />
+    </Suspense>
   );
 }
