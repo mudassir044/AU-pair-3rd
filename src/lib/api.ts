@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://au-pair.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://au-pair.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -35,22 +35,22 @@ export const authAPI = {
 
 // Profile API calls
 export const profileAPI = {
-  getProfile: () => api.get("/api/profiles/me"),
+  getProfile: () => api.get("/profiles/me"),
 
-  updateProfile: (profileData: any) => api.put("/api/profiles", profileData),
+  updateProfile: (profileData: any) => api.put("/profiles", profileData),
 
-  getMatches: () => api.get("/api/matches"),
+  getMatches: () => api.get("/matches"),
 };
 
 // Messages API calls
 export const messagesAPI = {
-  getConversations: () => api.get("/api/messages/conversations"),
+  getConversations: () => api.get("/messages/conversations"),
 
   getMessages: (conversationId: string) =>
-    api.get(`/api/messages/${conversationId}`),
+    api.get(`/messages/${conversationId}`),
 
   sendMessage: (conversationId: string, message: string) =>
-    api.post(`/api/messages/${conversationId}`, { message }),
+    api.post(`/messages/${conversationId}`, { message }),
 };
 
 // Documents API calls
@@ -59,12 +59,12 @@ export const documentsAPI = {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("type", type);
-    return api.post("/api/documents/upload", formData, {
+    return api.post("/documents/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
   },
 
-  getDocuments: () => api.get("/api/documents"),
+  getDocuments: () => api.get("/documents"),
 };
