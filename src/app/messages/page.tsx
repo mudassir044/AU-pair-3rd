@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,7 +46,7 @@ interface Conversation {
   match: number;
 }
 
-export default function MessagesPage() {
+function MessagesContent() {
   const [user, setUser] = useState<User | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<string | null>(
@@ -126,9 +127,9 @@ export default function MessagesPage() {
     }
 
     return () => {
-      newSocket.close();
+      socket?.close();
     };
-  }, [router, searchParams]);
+  }, [router, searchParams, socket]);
 
   useEffect(() => {
     if (activeConversation) {
@@ -370,7 +371,9 @@ export default function MessagesPage() {
                           <p className="text-sm text-gray-500">
                             {activeConv.online
                               ? "Online"
-                              : `Last seen ${formatTime(activeConv.lastMessageTime)}`}
+                              : `Last seen ${formatTime(
+                                  activeConv.lastMessageTime,
+                                )}`}
                           </p>
                         </div>
                       </div>
@@ -396,7 +399,11 @@ export default function MessagesPage() {
                     {messages.map((message) => (
                       <div
                         key={message.id}
-                        className={`flex ${message.senderId === "me" ? "justify-end" : "justify-start"}`}
+                        className={`flex ${
+                          message.senderId === "me"
+                            ? "justify-end"
+                            : "justify-start"
+                        }`}
                       >
                         <div
                           className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
@@ -504,5 +511,13 @@ export default function MessagesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={<div>Loading messages...</div>}>
+      <MessagesContent />
+    </Suspense>
   );
 }
