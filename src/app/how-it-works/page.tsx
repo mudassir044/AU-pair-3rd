@@ -19,6 +19,19 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "How It Works | Au Pair Connect",
+  description:
+    "Learn how to find your perfect cultural exchange match with Au Pair Connect. Step-by-step guide to connecting au pairs and host families.",
+  keywords: [
+    "how it works",
+    "au pair process",
+    "cultural exchange",
+    "host family matching",
+  ],
+};
 
 export default function HowItWorksPage() {
   const steps = [
