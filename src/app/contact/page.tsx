@@ -18,6 +18,20 @@ import {
   HelpCircle,
   Users,
 } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | Au Pair Connect",
+  description:
+    "Get in touch with Au Pair Connect. Contact our support team for help with cultural exchange, au pair matching, and platform assistance.",
+  keywords: [
+    "contact",
+    "support",
+    "help",
+    "au pair contact",
+    "customer service",
+  ],
+};
 
 export default function ContactPage() {
   const contactMethods = [
