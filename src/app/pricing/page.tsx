@@ -8,6 +8,20 @@ import {
 } from "@/components/ui/card";
 import { Check, Star, Zap, Crown, Shield } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing Plans | Au Pair Connect",
+  description:
+    "Choose the perfect plan for your cultural exchange journey. Transparent pricing for au pairs and host families with premium features.",
+  keywords: [
+    "pricing",
+    "plans",
+    "subscription",
+    "au pair cost",
+    "host family pricing",
+  ],
+};
 
 export default function PricingPage() {
   const plans = [
