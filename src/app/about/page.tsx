@@ -9,6 +9,20 @@ import {
 import { Heart, Users, Globe, Shield, Award, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us | Au Pair Connect",
+  description:
+    "Learn about Au Pair Connect's mission to connect cultures worldwide. Meet our team and discover our values for safe cultural exchange.",
+  keywords: [
+    "about",
+    "team",
+    "mission",
+    "cultural exchange",
+    "au pair platform",
+  ],
+};
 
 export default function AboutPage() {
   const teamMembers = [
