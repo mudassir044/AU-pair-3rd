@@ -1,5 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Eye, Lock, Users, Globe, FileText } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Au Pair Connect",
+  description:
+    "Read our privacy policy to understand how Au Pair Connect protects and uses your personal information during cultural exchange.",
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "personal information",
+    "GDPR",
+  ],
+};
 
 export default function PrivacyPage() {
   const sections = [
