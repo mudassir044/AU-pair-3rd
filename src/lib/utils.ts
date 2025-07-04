@@ -12,10 +12,9 @@ export function cn(...inputs: ClassValue[]) {
 interface User {
   id: string;
   email: string;
-  full_name: string;
-  user_type: 'au_pair' | 'host_family';
-  profile_picture?: string;
-  is_verified: boolean;
+  name: string;
+  role: 'au_pair' | 'host_family' | 'admin';
+  profileComplete: boolean;
 }
 
 interface AuthState {
