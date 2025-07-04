@@ -5,6 +5,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  firstName?: string;
   role: 'au_pair' | 'host_family' | 'admin';
   profileComplete: boolean;
 }
