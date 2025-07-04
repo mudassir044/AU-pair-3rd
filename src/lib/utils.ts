@@ -16,3 +16,9 @@ export const useNavigationStore = create<NavigationState>((set) => ({
   currentPath: '/',
   setCurrentPath: (path: string) => set({ currentPath: path }),
 }));
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
