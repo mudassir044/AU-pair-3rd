@@ -2,372 +2,267 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-import {
-  Sun,
-  Moon,
-  Menu,
-  X,
-  Heart,
-  MessageCircle,
-  Calendar,
-  FileText,
-  Home,
-  Users,
-} from "lucide-react";
-
-interface User {
-  id: string;
-  email: string;
-  role: "au_pair" | "host_family" | "admin";
-  name: string;
-}
+import { useAuthStore, useNavigationStore } from "@/lib/utils";
+import { Heart, Menu, X, User, LogOut, MessageCircle, Users, FileText, Calendar } from "lucide-react";
 
 export function Navigation() {
-  const [user, setUser] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading, logout, checkAuth } = useAuthStore();
+  const { setCurrentPath } = useNavigationStore();
 
   useEffect(() => {
-    const checkAuth = () => {
-      const userData = localStorage.getItem("user");
-      const token = localStorage.getItem("token");
-      
-      if (userData && token) {
-        try {
-          setUser(JSON.parse(userData));
-        } catch (error) {
-          console.error("Invalid user data in localStorage:", error);
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
-    };
+    setCurrentPath(pathname);
+  }, [pathname, setCurrentPath]);
 
-    // Check auth on mount
+  useEffect(() => {
     checkAuth();
+  }, [checkAuth]);
 
-    // Listen for storage changes (when user logs in/out in another tab)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "user" || e.key === "token") {
-        checkAuth();
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      if (token) {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
       }
-    };
-
-    // Listen for custom auth events
-    const handleAuthChange = () => {
-      checkAuth();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("authStateChanged", handleAuthChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("authStateChanged", handleAuthChange);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    
-    // Emit custom event for auth state change
-    window.dispatchEvent(new CustomEvent("authStateChanged"));
-    
-    router.push("/");
-    router.refresh(); // Force refresh to clear any cached state
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      logout();
+      router.push('/');
+      setIsMenuOpen(false);
+    }
   };
 
-  const isActive = (path: string) => pathname === path;
+  const handleNavigation = (href: string) => {
+    setIsMenuOpen(false);
+    router.push(href);
+  };
 
-  const navigationItems = user
-    ? [
-        { href: "/dashboard", label: "Dashboard", icon: Home },
-        { href: "/matches", label: "Matches", icon: Heart },
-        { href: "/messages", label: "Messages", icon: MessageCircle },
-        { href: "/bookings", label: "Bookings", icon: Calendar },
-        { href: "/documents", label: "Documents", icon: FileText },
-        ...(user.role === "admin"
-          ? [{ href: "/admin", label: "Admin", icon: Users }]
-          : []),
-      ]
-    : [];
+  // Public navigation items
+  const publicNavItems = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/how-it-works", label: "How it Works" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/contact", label: "Contact" },
+  ];
+
+  // Authenticated navigation items
+  const authenticatedNavItems = [
+    { href: "/dashboard", label: "Dashboard", icon: User },
+    { href: "/matches", label: "Matches", icon: Users },
+    { href: "/messages", label: "Messages", icon: MessageCircle },
+    { href: "/bookings", label: "Bookings", icon: Calendar },
+    { href: "/documents", label: "Documents", icon: FileText },
+  ];
+
+  if (isLoading) {
+    return (
+      <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
+        <div className="container-responsive">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex items-center space-x-2">
+              <Heart className="w-8 h-8 text-primary" />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                Au Pair Connect
+              </span>
+            </Link>
+            <div className="animate-pulse">
+              <div className="h-10 w-20 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
-    <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
+      <div className="container-responsive">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
-              <span className="hidden sm:inline">Au Pair Connect</span>
-              <span className="sm:hidden">APC</span>
+            <Heart className="w-8 h-8 text-primary" />
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              Au Pair Connect
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            {user ? (
+          <div className="hidden md:flex items-center space-x-8">
+            {isAuthenticated ? (
               <>
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        isActive(item.href)
-                          ? "bg-primary text-white"
-                          : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span className="hidden lg:inline">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/"
-                  className={`text-sm font-medium transition-colors ${
-                    isActive("/")
-                      ? "text-primary"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className={`text-sm font-medium transition-colors ${
-                    isActive("/about")
-                      ? "text-primary"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/how-it-works"
-                  className={`text-sm font-medium transition-colors ${
-                    isActive("/how-it-works")
-                      ? "text-primary"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                >
-                  How it Works
-                </Link>
-                <Link
-                  href="/pricing"
-                  className={`text-sm font-medium transition-colors ${
-                    isActive("/pricing")
-                      ? "text-primary"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/contact"
-                  className={`text-sm font-medium transition-colors ${
-                    isActive("/contact")
-                      ? "text-primary"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                >
-                  Contact
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Right side actions */}
-          <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-9 h-9 p-0"
-            >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-transform dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-transform dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-
-            {user ? (
-              <>
-                <div className="hidden md:flex items-center space-x-3">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Welcome, {user.name}
-                  </span>
-                  <Button onClick={handleLogout} variant="outline" size="sm">
-                    Logout
+                {authenticatedNavItems.map((item) => (
+                  <button
+                    key={item.href}
+                    onClick={() => handleNavigation(item.href)}
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      pathname === item.href
+                        ? "text-primary bg-primary/10"
+                        : "text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {user?.full_name || user?.email}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="flex items-center space-x-1"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
                   </Button>
                 </div>
               </>
             ) : (
-              <div className="hidden md:flex items-center space-x-3">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/auth/login">Login</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700"
-                >
-                  <Link href="/auth/register">Get Started</Link>
-                </Button>
-              </div>
+              <>
+                {publicNavItems.map((item) => (
+                  <button
+                    key={item.href}
+                    onClick={() => handleNavigation(item.href)}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      pathname === item.href
+                        ? "text-primary bg-primary/10"
+                        : "text-gray-600 dark:text-gray-300 hover:text-primary"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+                <div className="flex items-center space-x-3 ml-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleNavigation("/auth/login")}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => handleNavigation("/auth/register")}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              </>
             )}
+          </div>
 
-            {/* Mobile menu button */}
+          {/* Mobile menu button */}
+          <div className="md:hidden">
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden w-9 h-9 p-0"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="btn-touch"
             >
               {isMenuOpen ? (
-                <X className="h-4 w-4" />
+                <X className="w-6 h-6" />
               ) : (
-                <Menu className="h-4 w-4" />
+                <Menu className="w-6 h-6" />
               )}
             </Button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-            {user ? (
-              <>
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-base font-medium ${
-                        isActive(item.href)
-                          ? "bg-primary text-white"
-                          : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                      }`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                })}
-                <div className="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3">
-                  <div className="px-3 py-2 text-sm text-gray-600 dark:text-gray-300">
-                    Welcome, {user.name}
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 dark:border-gray-800">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {isAuthenticated ? (
+                <>
+                  <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700 mb-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {user?.full_name || user?.email}
+                      </span>
+                    </div>
                   </div>
-                  <Button
+                  {authenticatedNavItems.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => handleNavigation(item.href)}
+                      className={`w-full flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        pathname === item.href
+                          ? "text-primary bg-primary/10"
+                          : "text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                  <button
                     onClick={handleLogout}
-                    variant="outline"
-                    size="sm"
-                    className="mx-3"
+                    className="w-full flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 mt-2"
                   >
-                    Logout
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isActive("/")
-                      ? "bg-primary text-white"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isActive("/about")
-                      ? "bg-primary text-white"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/how-it-works"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isActive("/how-it-works")
-                      ? "bg-primary text-white"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  How it Works
-                </Link>
-                <Link
-                  href="/pricing"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isActive("/pricing")
-                      ? "bg-primary text-white"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/contact"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isActive("/contact")
-                      ? "bg-primary text-white"
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-                <div className="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3">
-                  <Link
-                    href="/auth/login"
-                    className="block px-3 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/auth/register"
-                    className="block px-3 py-2 rounded-lg text-base font-medium bg-primary text-white hover:bg-primary-600 mt-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Get Started
-                  </Link>
-                </div>
-              </>
-            )}
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  {publicNavItems.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => handleNavigation(item.href)}
+                      className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        pathname === item.href
+                          ? "text-primary bg-primary/10"
+                          : "text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                  <div className="flex flex-col space-y-2 mt-4 px-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleNavigation("/auth/login")}
+                      className="btn-touch"
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => handleNavigation("/auth/register")}
+                      className="btn-touch"
+                    >
+                      Get Started
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 }

@@ -1,28 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuthStore } from "@/lib/utils";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  MessageCircle,
+  Users,
+  Calendar,
+  User,
+  Star,
+  MapPin,
+  Languages,
+} from "lucide-react";
 import {
   Heart,
-  MessageCircle,
-  Calendar,
   FileText,
-  Users,
-  Star,
   TrendingUp,
   Clock,
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 interface User {
@@ -36,22 +36,63 @@ interface User {
 }
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isAuthenticated, isLoading } = useAuthStore();
+  const [stats, setStats] = useState({
+    newMatches: 0,
+    unreadMessages: 0,
+    upcomingMeetings: 0,
+  });
+
+  const [recentMatches, setRecentMatches] = useState([]);
+  const [profileCompletion, setProfileCompletion] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
   const router = useRouter();
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    } else {
-      router.push("/auth/login");
+    if (isAuthenticated && user) {
+      fetchDashboardData();
     }
 
     // Update time every minute
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(timer);
-  }, [router]);
+  }, [isAuthenticated, user, router]);
+
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      if (!token) return;
+
+      const [statsResponse, matchesResponse, profileResponse] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/stats`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches/recent`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/completion`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+      ]);
+
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData);
+      }
+
+      if (matchesResponse.ok) {
+        const matchesData = await matchesResponse.json();
+        setRecentMatches(matchesData.matches || []);
+      }
+
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        setProfileCompletion(profileData.completion || 0);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
+    }
+  };
 
   const getGreeting = () => {
     const hour = currentTime.getHours();
@@ -64,7 +105,7 @@ export default function DashboardPage() {
     newMatches: 12,
     unreadMessages: 3,
     upcomingMeetings: 2,
-    profileCompletion: user?.profileCompletion || 85,
+    profileCompletion: profileCompletion || 85,
   };
 
   const mockMatches = [
@@ -148,10 +189,22 @@ export default function DashboardPage() {
     { task: "Review safety guidelines", priority: "low", dueDate: "Next week" },
   ];
 
-  if (!user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    useEffect(() => {
+      router.push("/auth/login");
+    }, [router]);
+
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Redirecting to login...</p>
       </div>
     );
   }

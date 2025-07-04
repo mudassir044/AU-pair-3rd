@@ -1,8 +1,9 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
+import AuthInitializer from "@/components/auth-initializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -83,48 +84,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Au Pair Connect",
-    description: "Connect Au Pairs with Host Families worldwide",
-    url: "https://au-pair-connect.netlify.app",
-    potentialAction: {
-      "@type": "SearchAction",
-      target:
-        "https://au-pair-connect.netlify.app/search?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#3b82f6" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -132,8 +93,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AuthInitializer />
           <Navigation />
-          {children}
+          <main className="min-h-screen">{children}</main>
         </ThemeProvider>
       </body>
     </html>

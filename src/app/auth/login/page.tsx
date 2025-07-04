@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Heart, Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { authAPI } from "@/lib/api";
+import { useAuthStore } from "@/store/authStore"; // Assuming you have an auth store
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,10 @@ export default function LoginPage() {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
 
-      // Emit custom event for auth state change
+      // Update auth state using the auth store
+      useAuthStore.getState().login(response.data.user);
+
+      // Emit custom event for auth state change (optional, for legacy components)
       window.dispatchEvent(new CustomEvent("authStateChanged"));
 
       router.push("/dashboard");
