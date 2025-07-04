@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Heart, Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { authAPI } from "@/lib/api";
-import { useAuthStore } from "@/store/authStore"; // Assuming you have an auth store
+import { useAuthStore } from "@/lib/utils"; // Assuming you have an auth store
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
