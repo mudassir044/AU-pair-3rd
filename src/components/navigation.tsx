@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
-import { useNavigationStore } from "@/lib/utils";
 import { Heart, Menu, X, User, LogOut, MessageCircle, Users, FileText, Calendar } from "lucide-react";
 
 export function Navigation() {
@@ -13,13 +12,11 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuthStore();
-  const { setCurrentPath } = useNavigationStore();
 
   useEffect(() => {
-    setCurrentPath(pathname);
-  }, [pathname, setCurrentPath]);
+  }, [pathname]);
 
-  
+
 
   const handleLogout = async () => {
     try {
