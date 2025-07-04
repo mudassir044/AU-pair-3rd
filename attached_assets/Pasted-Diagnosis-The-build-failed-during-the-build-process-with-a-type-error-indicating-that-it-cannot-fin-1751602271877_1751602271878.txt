@@ -1,0 +1,61 @@
+Diagnosis: The build failed during the build process with a type error indicating that it cannot find the name 'Link' in the file "src/app/documents/page.tsx" line 87.
+
+Solution: The error is likely occurring because the 'Link' component is not imported in the file. To resolve this issue, make sure to import 'Link' from the appropriate package before using it in the file.
+
+In the file "src/app/documents/page.tsx", add the following import statement at the beginning of the file:
+
+import Link from 'next/link';
+Make sure to verify that the package containing the 'Link' component is present in the package.json or that the file was committed to the repository before making this modification.
+
+
+Copy analysis for use in AI tools
+Ask ChatGPT
+Need more help? Go to Ask Netlify
+
+Retry diagnostics
+Netlify uses AI to analyze and generate solutions to fix deploy failures. It may not always understand the full context or produce a reliable, accurate answer. To learn more, please refer to our docs.
+
+Did you find this helpful? Your feedback helps improve this feature.
+
+
+
+Initializing
+Complete
+9:09:19 AM: build-image version: 454348036fe6ba392813d99eb00e96b3425609e0 (noble)
+9:09:19 AM: buildbot version: 454348036fe6ba392813d99eb00e96b3425609e0
+9:09:19 AM: Fetching cached dependencies
+9:09:19 AM: Starting to download cache of 569.1MB (Last modified: 2025-07-03 19:08:07 +0000 UTC)
+9:09:22 AM: Finished downloading cache in 3.231s
+9:09:22 AM: Starting to extract cache
+9:09:29 AM: Finished extracting cache in 6.613s
+9:09:29 AM: Finished fetching cache in 9.946s
+9:09:29 AM: Starting to prepare the repo for build
+9:09:29 AM: Preparing Git Reference refs/heads/main
+9:09:33 AM: Starting to install dependencies
+9:09:33 AM: Started restoring cached python cache
+9:09:33 AM: Finished restoring cached python cache
+9:09:33 AM: Started restoring cached ruby cache
+9:09:33 AM: Finished restoring cached ruby cache
+9:09:34 AM: Started restoring cached go cache
+9:09:34 AM: Finished restoring cached go cache
+9:09:34 AM: Using PHP version
+9:09:35 AM: v22.17.0 is already installed.
+9:09:35 AM: Now using node v22.17.0 (npm v10.9.2)
+9:09:35 AM: Enabling Node.js Corepack
+9:09:36 AM: Started restoring cached bun cache
+9:09:36 AM: Finished restoring cached bun cache
+9:09:36 AM: Started restoring cached build plugins
+9:09:36 AM: Finished restoring cached build plugins
+9:09:36 AM: Started restoring cached corepack dependencies
+9:09:36 AM: Finished restoring cached corepack dependencies
+9:09:36 AM: No npm workspaces detected
+9:09:36 AM: Started restoring cached node modules
+9:09:36 AM: Finished restoring cached node modules
+9:09:36 AM: Installing npm packages using npm version 10.9.2
+9:09:37 AM: up to date in 1s
+9:09:37 AM: npm packages installed
+9:09:37 AM: Successfully installed dependencies
+9:09:37 AM: Starting build script
+9:09:38 AM: Detected 1 framework(s)
+9:09:38 AM: "next" at version "15.1.5"
+9:09:38 AM: Section completed: initializing
