@@ -1,0 +1,316 @@
+Detailed Summary of Changes Made
+Problem Identified
+The original issue was with the SQL query using storage.foldername(name) which was causing a syntax error. This function is used in Row Level Security (RLS) policies for the storage.objects table to ensure users can only access their own files.
+
+Investigation Results
+We confirmed that the storage.foldername function exists in your database
+We verified that the user-documents storage bucket exists
+We found that the RLS policies on the storage.objects table were already correctly set up
+We discovered that the documents table had RLS enabled but no policies defined
+Solutions Implemented
+1. Edge Functions Created
+We created two Edge Functions to handle document operations securely:
+
+a. document-upload Edge Function
+Handles secure file uploads to the storage bucket
+Creates entries in the documents table
+Uses proper folder structure (userId/filename) for RLS compatibility
+Generates signed URLs for temporary access to files
+Handles error cases and cleanup
+b. document-verify Edge Function
+Allows admins to verify or reject uploaded documents
+Updates document status, verification timestamp, and notes
+Automatically updates profile photos when verified
+Includes proper authorization checks
+2. RLS Policy for Documents Table
+We prepared an RLS policy to enable row-level security on the documents table.
+
+Required Changes for Implementation
+Backend Changes
+Deploy the Edge Functions:
+
+The Edge Functions are ready to be deployed through the Supabase Dashboard
+No code changes needed, just deploy them as-is
+Apply the RLS Policy:
+
+Execute the RLS policy SQL we provided for the documents table
+This can be done through the SQL Editor in the Supabase Dashboard
+Environment Variables:
+
+No additional environment variables needed as the Edge Functions use the built-in Supabase variables
+Frontend Changes
+Document Upload Implementation:
+
+// Example code for frontend
+
+async
+ 
+function
+ 
+uploadDocument
+(
+file, 
+type
+) 
+{
+  
+// Convert file to base64
+
+  
+const
+ reader = 
+new
+ FileReader();
+  reader.readAsDataURL(file);
+  
+return
+ 
+new
+ 
+Promise
+(
+(
+resolve, reject
+) =>
+ {
+    reader.onload = 
+async
+ () => {
+      
+try
+ {
+        
+const
+ base64File = reader.result;
+        
+// Call the Edge Function
+
+        
+const
+ { data, error } = 
+await
+ supabase.functions.invoke(
+'document-upload'
+, {
+          
+body
+: {
+            
+file
+: base64File,
+            
+originalName
+: file.name,
+            
+type
+: 
+type
+, 
+// 'ID', 'PASSPORT', 'VISA', 'PROFILE_PHOTO'
+
+            
+metadata
+: {
+              
+notes
+: 
+'Optional notes about the document'
+
+            }
+          }
+        });
+        
+if
+ (error) 
+throw
+ error;
+        resolve(data);
+      } 
+catch
+ (error) {
+        reject(error);
+      }
+    };
+    reader.onerror = 
+(
+error
+) =>
+ reject(error);
+  });
+}
+
+Document Verification Implementation (Admin only):
+
+// Example code for admin frontend
+
+async
+ 
+function
+ 
+verifyDocument
+(
+documentId, status, notes
+) 
+{
+  
+try
+ {
+    
+const
+ { data, error } = 
+await
+ supabase.functions.invoke(
+'document-verify'
+, {
+      
+body
+: {
+        
+documentId
+: documentId,
+        
+status
+: status, 
+// 'VERIFIED' or 'REJECTED'
+
+        
+notes
+: notes
+      }
+    });
+    
+if
+ (error) 
+throw
+ error;
+    
+return
+ data;
+  } 
+catch
+ (error) {
+    
+console
+.error(
+'Error verifying document:'
+, error);
+    
+throw
+ error;
+  }
+}
+
+Document Listing Implementation:
+
+// For users to see their own documents
+
+async
+ function 
+listMyDocuments
+(
+)
+ {
+  
+const
+ { data, error } = 
+await
+ supabase
+    .
+from
+(
+'documents'
+)
+    .
+select
+(
+'*'
+)
+    .order(
+'uploadedAt'
+, { 
+ascending
+: 
+false
+ });
+  
+if
+ (error) 
+throw
+ error;
+  
+return
+ data;
+}
+// For admins to see pending documents
+
+async
+ function 
+listPendingDocuments
+(
+)
+ {
+  
+const
+ { data, error } = 
+await
+ supabase
+    .
+from
+(
+'documents'
+)
+    .
+select
+(
+'*, users(email)'
+)
+    .eq(
+'status'
+, 
+'PENDING'
+)
+    .order(
+'uploadedAt'
+, { 
+ascending
+: 
+true
+ });
+  
+if
+ (error) 
+throw
+ error;
+  
+return
+ data;
+}
+
+UI Components Needed:
+
+File upload component with type selection
+Document status display (pending/verified/rejected)
+Admin verification interface with approve/reject buttons
+Document preview component (for images)
+Testing Requirements
+User Document Upload Test:
+
+Test uploading different document types
+Verify the documents appear in the user's document list
+Check that the files are stored in the correct folder structure
+Admin Verification Test:
+
+Test approving and rejecting documents
+Verify status changes are reflected in the UI
+Check that profile photos are updated when verified
+Security Test:
+
+Verify users can only see their own documents
+Verify only admins can verify documents
+Test that users cannot access other users' files directly
+Summary of Benefits
+Security: Proper RLS ensures users can only access their own files
+Organization: Files are stored in user-specific folders
+Workflow: Clear process for document upload and verification
+Integration: Automatic profile photo updates when verified
+All the necessary components have been created and are ready to be deployed. The Edge Functions handle the complex logic securely, and the frontend implementation should be straightforward with the provided examples.
