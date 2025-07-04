@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuthStore } from "@/lib/utils";
+import { useAuthStore } from "@/store/authStore";
 import {
   MessageCircle,
   Users,
@@ -24,7 +24,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { User } from '@/store/authStore';
 
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading } = useAuthStore();
