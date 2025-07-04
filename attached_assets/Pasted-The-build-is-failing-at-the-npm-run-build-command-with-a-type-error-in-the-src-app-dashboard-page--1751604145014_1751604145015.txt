@@ -1,0 +1,112 @@
+The build is failing at the npm run build command with a type error in the ./src/app/dashboard/page.tsx file at line 114. The error indicates that the property 'role' does not exist on type 'User'.
+
+Solution
+In the ./src/app/dashboard/page.tsx file, ensure that the 'role' property is correctly defined on the 'User' type.
+Verify that the necessary type definitions for the 'User' type are correctly imported and used.
+Make sure that the 'role' property is present in the 'User' type definition or object.
+After verifying the above, run the build command again to confirm if the issue has been resolved.
+
+Copy analysis for use in AI tools
+Ask ChatGPT
+Need more help? Go to Ask Netlify
+
+Retry diagnostics
+Netlify uses AI to analyze and generate solutions to fix deploy failures. It may not always understand the full context or produce a reliable, accurate answer. To learn more, please refer to our docs.
+
+Did you find this helpful? Your feedback helps improve this feature.
+
+
+
+Initializing
+Complete
+Building
+Failed
+9:32:37 AM: Netlify Build                                                 
+9:32:37 AM: ────────────────────────────────────────────────────────────────
+9:32:37 AM: ​
+9:32:37 AM: ❯ Version
+9:32:37 AM:   @netlify/build 33.5.0
+9:32:37 AM: ​
+9:32:37 AM: ❯ Flags
+9:32:37 AM:   accountId: 685414adabe1d4ef643dc4a8
+9:32:37 AM:   baseRelDir: true
+9:32:37 AM:   buildId: 68675951d1c97200087ad677
+9:32:37 AM:   deployId: 68675951d1c97200087ad679
+9:32:37 AM: ​
+9:32:37 AM: ❯ Current directory
+9:32:37 AM:   /opt/build/repo
+9:32:37 AM: ​
+9:32:37 AM: ❯ Config file
+9:32:37 AM:   No config file was defined: using default values.
+9:32:37 AM: ​
+9:32:37 AM: ❯ Context
+9:32:37 AM:   production
+9:32:37 AM: ​
+9:32:37 AM: ❯ Installing extensions
+9:32:37 AM:    - neon
+9:32:37 AM:    - simpleanalytics
+9:32:39 AM: ​
+9:32:39 AM: ❯ Using Next.js Runtime - v5.11.4
+9:32:39 AM: ​
+9:32:39 AM: ❯ Loading plugins
+9:32:39 AM:    - @netlify/plugin-emails@1.1.1 from Netlify app
+9:32:39 AM: ​
+9:32:39 AM: ❯ Loading extensions
+9:32:39 AM:    - neon
+9:32:39 AM:    - simpleanalytics
+9:32:42 AM: Next.js cache restored
+9:32:42 AM: ​
+9:32:42 AM: Build command from Netlify app                                
+9:32:42 AM: ────────────────────────────────────────────────────────────────
+9:32:42 AM: ​
+9:32:42 AM: $ npm run build
+9:32:43 AM: > au-pair-frontend@0.1.0 build
+9:32:43 AM: > next build
+9:32:43 AM:    ▲ Next.js 15.1.5
+9:32:43 AM:    - Environments: .env.local
+9:32:43 AM:    Creating an optimized production build ...
+9:32:51 AM:  ✓ Compiled successfully
+9:32:51 AM:    Linting and checking validity of types ...
+9:32:56 AM: Failed to compile.
+9:32:56 AM: 
+9:32:56 AM: ./src/app/dashboard/page.tsx:114:19
+9:32:56 AM: Type error: Property 'role' does not exist on type 'User'.
+9:32:56 AM:   112 |     {
+9:32:56 AM:   113 |       id: 1,
+9:32:56 AM: > 114 |       name: user?.role === "au_pair" ? "The Johnson Family" : "Maria Rodriguez",
+9:32:56 AM:       |                   ^
+9:32:56 AM:   115 |       location: user?.role === "au_pair" ? "New York, USA" : "Madrid, Spain",
+9:32:56 AM:   116 |       match: 95,
+9:32:56 AM:   117 |       image: "https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg",
+9:32:56 AM: Static worker exited with code: 1 and signal: null
+9:32:56 AM: ​
+9:32:56 AM: "build.command" failed                                        
+9:32:56 AM: ────────────────────────────────────────────────────────────────
+9:32:56 AM: ​
+9:32:56 AM:   Error message
+9:32:56 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+9:32:56 AM: ​
+9:32:56 AM:   Error location
+9:32:56 AM:   In Build command from Netlify app:
+9:32:56 AM:   npm run build
+9:32:56 AM: ​
+9:32:56 AM:   Resolved config
+9:32:56 AM:   build:
+9:32:56 AM:     command: npm run build
+9:32:56 AM:     commandOrigin: ui
+9:32:56 AM:     environment:
+9:32:56 AM:       - NETLIFY_EMAILS_DIRECTORY
+9:32:56 AM:       - NETLIFY_EMAILS_SECRET
+9:32:56 AM:     publish: /opt/build/repo/.next
+9:32:56 AM:     publishOrigin: ui
+9:32:56 AM:   plugins:
+9:32:56 AM:     - inputs: {}
+9:32:56 AM:       origin: ui
+9:32:56 AM:       package: "@netlify/plugin-nextjs"
+9:32:56 AM:     - inputs: {}
+9:32:56 AM:       origin: ui
+9:32:56 AM:       package: "@netlify/plugin-emails"
+9:32:57 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+9:32:57 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+9:32:57 AM: Failing build: Failed to build site
+9:32:57 AM: Finished processing build request in 39.418s
