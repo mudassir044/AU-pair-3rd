@@ -1,0 +1,104 @@
+Diagnosis: The build failed at line 83 with the following error:
+
+Module not found: Can't resolve '@/store/authStore'
+Solution:
+
+Verify that the package '@/store/authStore' is included in the package.json file or was committed to the repository.
+If the package is missing, ensure it is added to the project dependencies or committed to the repository.
+
+Copy analysis for use in AI tools
+Ask ChatGPT
+Need more help? Go to Ask Netlify
+
+Retry diagnostics
+Netlify uses AI to analyze and generate solutions to fix deploy failures. It may not always understand the full context or produce a reliable, accurate answer. To learn more, please refer to our docs.
+
+Did you find this helpful? Your feedback helps improve this feature.
+
+
+
+Initializing
+Complete
+Building
+Failed
+9:17:59 AM: Netlify Build                                                 
+9:17:59 AM: ────────────────────────────────────────────────────────────────
+9:17:59 AM: ​
+9:17:59 AM: ❯ Version
+9:17:59 AM:   @netlify/build 33.5.0
+9:17:59 AM: ​
+9:17:59 AM: ❯ Flags
+9:17:59 AM:   accountId: 685414adabe1d4ef643dc4a8
+9:17:59 AM:   baseRelDir: true
+9:17:59 AM:   buildId: 686755dfb7d25d00089828d5
+9:17:59 AM:   deployId: 686755dfb7d25d00089828d7
+9:17:59 AM: ​
+9:17:59 AM: ❯ Current directory
+9:17:59 AM:   /opt/build/repo
+9:17:59 AM: ​
+9:17:59 AM: ❯ Config file
+9:17:59 AM:   No config file was defined: using default values.
+9:17:59 AM: ​
+9:17:59 AM: ❯ Context
+9:17:59 AM:   production
+9:17:59 AM: ​
+9:17:59 AM: ❯ Installing extensions
+9:17:59 AM:    - simpleanalytics
+9:17:59 AM:    - neon
+9:18:01 AM: ​
+9:18:01 AM: ❯ Using Next.js Runtime - v5.11.4
+9:18:01 AM: ​
+9:18:01 AM: ❯ Loading plugins
+9:18:01 AM:    - @netlify/plugin-emails@1.1.1 from Netlify app
+9:18:01 AM: ​
+9:18:01 AM: ❯ Loading extensions
+9:18:01 AM:    - simpleanalytics
+9:18:01 AM:    - neon
+9:18:04 AM: Next.js cache restored
+9:18:04 AM: ​
+9:18:04 AM: Build command from Netlify app                                
+9:18:04 AM: ────────────────────────────────────────────────────────────────
+9:18:04 AM: ​
+9:18:04 AM: $ npm run build
+9:18:04 AM: > au-pair-frontend@0.1.0 build
+9:18:04 AM: > next build
+9:18:05 AM:    ▲ Next.js 15.1.5
+9:18:05 AM:    - Environments: .env.local
+9:18:05 AM:    Creating an optimized production build ...
+9:18:10 AM: Failed to compile.
+9:18:10 AM: 
+9:18:10 AM: ./src/app/auth/login/page.tsx
+9:18:10 AM: Module not found: Can't resolve '@/store/authStore'
+9:18:10 AM: https://nextjs.org/docs/messages/module-not-found
+9:18:10 AM: > Build failed because of webpack errors
+9:18:10 AM: ​
+9:18:10 AM: "build.command" failed                                        
+9:18:10 AM: ────────────────────────────────────────────────────────────────
+9:18:10 AM: ​
+9:18:10 AM:   Error message
+9:18:10 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+9:18:10 AM: ​
+9:18:10 AM:   Error location
+9:18:10 AM:   In Build command from Netlify app:
+9:18:10 AM:   npm run build
+9:18:10 AM: ​
+9:18:10 AM:   Resolved config
+9:18:10 AM:   build:
+9:18:10 AM:     command: npm run build
+9:18:10 AM:     commandOrigin: ui
+9:18:10 AM:     environment:
+9:18:10 AM:       - NETLIFY_EMAILS_DIRECTORY
+9:18:10 AM:       - NETLIFY_EMAILS_SECRET
+9:18:10 AM:     publish: /opt/build/repo/.next
+9:18:10 AM:     publishOrigin: ui
+9:18:10 AM:   plugins:
+9:18:10 AM:     - inputs: {}
+9:18:10 AM:       origin: ui
+9:18:10 AM:       package: "@netlify/plugin-nextjs"
+9:18:10 AM:     - inputs: {}
+9:18:10 AM:       origin: ui
+9:18:10 AM:       package: "@netlify/plugin-emails"
+9:18:11 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+9:18:11 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+9:18:11 AM: Failing build: Failed to build site
+9:18:11 AM: Finished processing build request in 34.392s
