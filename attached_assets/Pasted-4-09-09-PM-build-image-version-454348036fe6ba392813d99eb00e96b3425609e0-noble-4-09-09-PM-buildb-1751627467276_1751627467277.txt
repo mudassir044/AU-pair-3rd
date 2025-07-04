@@ -1,0 +1,129 @@
+4:09:09 PM: build-image version: 454348036fe6ba392813d99eb00e96b3425609e0 (noble)
+4:09:09 PM: buildbot version: 454348036fe6ba392813d99eb00e96b3425609e0
+4:09:09 PM: Fetching cached dependencies
+4:09:09 PM: Starting to download cache of 590.1MB (Last modified: 2025-07-04 04:09:40 +0000 UTC)
+4:09:11 PM: Finished downloading cache in 1.373s
+4:09:11 PM: Starting to extract cache
+4:09:18 PM: Finished extracting cache in 7.081s
+4:09:18 PM: Finished fetching cache in 8.575s
+4:09:18 PM: Starting to prepare the repo for build
+4:09:18 PM: Preparing Git Reference refs/heads/main
+4:09:30 PM: Starting to install dependencies
+4:09:30 PM: Started restoring cached python cache
+4:09:30 PM: Finished restoring cached python cache
+4:09:30 PM: Started restoring cached ruby cache
+4:09:31 PM: Finished restoring cached ruby cache
+4:09:31 PM: Started restoring cached go cache
+4:09:31 PM: Finished restoring cached go cache
+4:09:31 PM: Using PHP version
+4:09:32 PM: v22.17.0 is already installed.
+4:09:32 PM: Now using node v22.17.0 (npm v10.9.2)
+4:09:32 PM: Enabling Node.js Corepack
+4:09:32 PM: Started restoring cached bun cache
+4:09:32 PM: Finished restoring cached bun cache
+4:09:32 PM: Started restoring cached build plugins
+4:09:32 PM: Finished restoring cached build plugins
+4:09:32 PM: Started restoring cached corepack dependencies
+4:09:32 PM: Finished restoring cached corepack dependencies
+4:09:32 PM: No npm workspaces detected
+4:09:32 PM: Started restoring cached node modules
+4:09:32 PM: Finished restoring cached node modules
+4:09:33 PM: Installing npm packages using npm version 10.9.2
+4:09:43 PM: added 15 packages, removed 2 packages, and changed 8 packages in 10s
+4:09:43 PM: npm packages installed
+4:09:43 PM: Successfully installed dependencies
+4:09:43 PM: Starting build script
+4:09:44 PM: Detected 1 framework(s)
+4:09:44 PM: "next" at version "15.3.5"
+4:09:44 PM: Section completed: initializing
+4:09:46 PM: ​
+4:09:46 PM: Netlify Build                                                 
+4:09:46 PM: ────────────────────────────────────────────────────────────────
+4:09:46 PM: ​
+4:09:46 PM: ❯ Version
+4:09:46 PM:   @netlify/build 33.5.0
+4:09:46 PM: ​
+4:09:46 PM: ❯ Flags
+4:09:46 PM:   accountId: 685414adabe1d4ef643dc4a8
+4:09:46 PM:   baseRelDir: true
+4:09:46 PM:   buildId: 6867b654fd6bcb0008bd5bf7
+4:09:46 PM:   deployId: 6867b654fd6bcb0008bd5bf9
+4:09:46 PM: ​
+4:09:46 PM: ❯ Current directory
+4:09:46 PM:   /opt/build/repo
+4:09:46 PM: ​
+4:09:46 PM: ❯ Config file
+4:09:46 PM:   No config file was defined: using default values.
+4:09:46 PM: ​
+4:09:46 PM: ❯ Context
+4:09:46 PM:   production
+4:09:47 PM: ​
+4:09:47 PM: ❯ Installing extensions
+4:09:47 PM:    - neon
+4:09:47 PM:    - simpleanalytics
+4:09:49 PM: ​
+4:09:49 PM: ❯ Using Next.js Runtime - v5.11.4
+4:09:49 PM: ​
+4:09:49 PM: ❯ Loading plugins
+4:09:49 PM:    - @netlify/plugin-emails@1.1.1 from Netlify app
+4:09:49 PM: ​
+4:09:49 PM: ❯ Loading extensions
+4:09:49 PM:    - neon
+4:09:49 PM:    - simpleanalytics
+4:09:52 PM: Next.js cache restored
+4:09:52 PM: ​
+4:09:52 PM: Build command from Netlify app                                
+4:09:52 PM: ────────────────────────────────────────────────────────────────
+4:09:52 PM: ​
+4:09:52 PM: $ npm run build
+4:09:52 PM: > au-pair-frontend@0.1.0 build
+4:09:52 PM: > next build
+4:09:53 PM:    ▲ Next.js 15.3.5
+4:09:53 PM:    - Environments: .env.local
+4:09:53 PM:    Creating an optimized production build ...
+4:10:13 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2
+4:10:03 PM: Retrying 1/3...
+4:10:06 PM:  ✓ Compiled successfully in 9.0s
+4:10:06 PM:    Linting and checking validity of types ...
+4:10:11 PM: Failed to compile.
+4:10:11 PM: 
+4:10:11 PM: ./src/components/navigation.tsx:121:30
+4:10:11 PM: Type error: Property 'full_name' does not exist on type 'User'.
+4:10:11 PM:   119 |                     </div>
+4:10:11 PM:   120 |                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+4:10:11 PM: > 121 |                       {user?.full_name || user?.email}
+4:10:11 PM:       |                              ^
+4:10:11 PM:   122 |                     </span>
+4:10:11 PM:   123 |                   </div>
+4:10:11 PM:   124 |                   <Button
+4:10:11 PM: Next.js build worker exited with code: 1 and signal: null
+4:10:12 PM: ​
+4:10:12 PM: "build.command" failed                                        
+4:10:12 PM: ────────────────────────────────────────────────────────────────
+4:10:12 PM: ​
+4:10:12 PM:   Error message
+4:10:12 PM:   Command failed with exit code 1: npm run build
+4:10:12 PM: ​
+4:10:12 PM:   Error location
+4:10:12 PM:   In Build command from Netlify app:
+4:10:12 PM:   npm run build
+4:10:12 PM: ​
+4:10:12 PM:   Resolved config
+4:10:12 PM:   build:
+4:10:12 PM:     command: npm run build
+4:10:12 PM:     commandOrigin: ui
+4:10:12 PM:     environment:
+4:10:12 PM:       - NETLIFY_EMAILS_DIRECTORY
+4:10:12 PM:       - NETLIFY_EMAILS_SECRET
+4:10:12 PM:     publish: /opt/build/repo/.next
+4:10:12 PM:     publishOrigin: ui
+4:10:12 PM:   plugins:
+4:10:12 PM:     - inputs: {}
+4:10:12 PM:       origin: ui
+4:10:12 PM:       package: "@netlify/plugin-nextjs"
+4:10:12 PM:     - inputs: {}
+4:10:12 PM:       origin: ui
+4:10:12 PM:       package: "@netlify/plugin-emails"
+4:10:12 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+4:10:13 PM: Failing build: Failed to build site
+4:10:13 PM: Finished processing build request in 1m3.525s
