@@ -33,16 +33,58 @@ export function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
+    const checkAuth = () => {
+      const userData = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+      
+      if (userData && token) {
+        try {
+          setUser(JSON.parse(userData));
+        } catch (error) {
+          console.error("Invalid user data in localStorage:", error);
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    };
+
+    // Check auth on mount
+    checkAuth();
+
+    // Listen for storage changes (when user logs in/out in another tab)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "user" || e.key === "token") {
+        checkAuth();
+      }
+    };
+
+    // Listen for custom auth events
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("authStateChanged", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("authStateChanged", handleAuthChange);
+    };
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
+    
+    // Emit custom event for auth state change
+    window.dispatchEvent(new CustomEvent("authStateChanged"));
+    
     router.push("/");
+    router.refresh(); // Force refresh to clear any cached state
   };
 
   const isActive = (path: string) => pathname === path;

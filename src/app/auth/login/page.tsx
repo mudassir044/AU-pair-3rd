@@ -32,10 +32,15 @@ export default function LoginPage() {
     try {
       const response = await authAPI.login(email, password);
 
-      // Store user data
+      // Store user data and token
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+
+      // Emit custom event for auth state change
+      window.dispatchEvent(new CustomEvent("authStateChanged"));
 
       router.push("/dashboard");
+      router.refresh(); // Force refresh to update navigation state
     } catch (error: any) {
       console.error("Login failed:", error);
       setError(

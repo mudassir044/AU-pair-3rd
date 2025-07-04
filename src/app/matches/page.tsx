@@ -58,84 +58,98 @@ export default function MatchesPage() {
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
-    if (userData) {
+    const token = localStorage.getItem("token");
+
+    if (userData && token) {
       setUser(JSON.parse(userData));
+      fetchMatches();
     } else {
       router.push("/auth/login");
-      return;
     }
+  }, [router]);
 
-    // Mock matches data
-    const mockMatches: Match[] = [
-      {
-        id: 1,
-        name:
-          user?.role === "au_pair" ? "The Johnson Family" : "Maria Rodriguez",
-        age: user?.role === "au_pair" ? 35 : 22,
-        location: user?.role === "au_pair" ? "New York, USA" : "Madrid, Spain",
-        images: [
-          "https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg",
-          "https://images.pexels.com/photos/7579306/pexels-photo-7579306.jpeg",
-        ],
-        bio:
-          user?.role === "au_pair"
-            ? "Loving family with 2 children (ages 5 and 8). Looking for a caring au pair to help with childcare and become part of our family."
-            : "Experienced au pair with 3 years of childcare experience. Love outdoor activities, teaching languages, and creating fun learning experiences.",
-        languages: ["English", "Spanish"],
-        rating: 4.9,
-        experience:
-          user?.role === "au_pair" ? "3 years hosting" : "3 years childcare",
-        interests: ["Sports", "Cooking", "Travel", "Music"],
-        availability: "Available from March 2025",
-        verified: true,
-      },
-      {
-        id: 2,
-        name: user?.role === "au_pair" ? "The Smith Family" : "Anna Mueller",
-        age: user?.role === "au_pair" ? 32 : 24,
-        location: user?.role === "au_pair" ? "London, UK" : "Berlin, Germany",
-        images: [
-          "https://images.pexels.com/photos/2714626/pexels-photo-2714626.jpeg",
-          "https://images.pexels.com/photos/8828605/pexels-photo-8828605.jpeg",
-        ],
-        bio:
-          user?.role === "au_pair"
-            ? "Active family seeking an au pair who loves outdoor activities. We have 1 toddler and enjoy weekend adventures."
-            : "Creative and energetic au pair who loves arts, crafts, and outdoor adventures. Great with toddlers and school-age children.",
-        languages: ["English", "German"],
-        rating: 4.8,
-        experience:
-          user?.role === "au_pair" ? "2 years hosting" : "2 years childcare",
-        interests: ["Art", "Hiking", "Photography", "Languages"],
-        availability: "Available from April 2025",
-        verified: true,
-      },
-      {
-        id: 3,
-        name: user?.role === "au_pair" ? "The Brown Family" : "Sophie Laurent",
-        age: user?.role === "au_pair" ? 29 : 23,
-        location: user?.role === "au_pair" ? "Paris, France" : "Lyon, France",
-        images: [
-          "https://images.pexels.com/photos/15817434/pexels-photo-15817434.jpeg",
-          "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-        ],
-        bio:
-          user?.role === "au_pair"
-            ? "Multicultural family looking for an au pair to help with our 3 children and share cultural experiences."
-            : "Passionate about education and child development. Fluent in French and English, love teaching and learning new cultures.",
-        languages: ["French", "English", "Italian"],
-        rating: 4.7,
-        experience:
-          user?.role === "au_pair" ? "4 years hosting" : "1 year childcare",
-        interests: ["Education", "Culture", "Books", "Swimming"],
-        availability: "Available from May 2025",
-        verified: true,
-      },
-    ];
-
-    setMatches(mockMatches);
-    setLoading(false);
-  }, [user, router]);
+  const fetchMatches = async () => {
+    try {
+      setLoading(true);
+      // const response = await profileAPI.getMatches();
+      // setMatches(response.data || []);
+      //Mock matches data
+      const mockMatches: Match[] = [
+        {
+          id: 1,
+          name:
+            user?.role === "au_pair" ? "The Johnson Family" : "Maria Rodriguez",
+          age: user?.role === "au_pair" ? 35 : 22,
+          location:
+            user?.role === "au_pair" ? "New York, USA" : "Madrid, Spain",
+          images: [
+            "https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg",
+            "https://images.pexels.com/photos/7579306/pexels-photo-7579306.jpeg",
+          ],
+          bio:
+            user?.role === "au_pair"
+              ? "Loving family with 2 children (ages 5 and 8). Looking for a caring au pair to help with childcare and become part of our family."
+              : "Experienced au pair with 3 years of childcare experience. Love outdoor activities, teaching languages, and creating fun learning experiences.",
+          languages: ["English", "Spanish"],
+          rating: 4.9,
+          experience:
+            user?.role === "au_pair" ? "3 years hosting" : "3 years childcare",
+          interests: ["Sports", "Cooking", "Travel", "Music"],
+          availability: "Available from March 2025",
+          verified: true,
+        },
+        {
+          id: 2,
+          name: user?.role === "au_pair" ? "The Smith Family" : "Anna Mueller",
+          age: user?.role === "au_pair" ? 32 : 24,
+          location: user?.role === "au_pair" ? "London, UK" : "Berlin, Germany",
+          images: [
+            "https://images.pexels.com/photos/2714626/pexels-photo-2714626.jpeg",
+            "https://images.pexels.com/photos/8828605/pexels-photo-8828605.jpeg",
+          ],
+          bio:
+            user?.role === "au_pair"
+              ? "Active family seeking an au pair who loves outdoor activities. We have 1 toddler and enjoy weekend adventures."
+              : "Creative and energetic au pair who loves arts, crafts, and outdoor adventures. Great with toddlers and school-age children.",
+          languages: ["English", "German"],
+          rating: 4.8,
+          experience:
+            user?.role === "au_pair" ? "2 years hosting" : "2 years childcare",
+          interests: ["Art", "Hiking", "Photography", "Languages"],
+          availability: "Available from April 2025",
+          verified: true,
+        },
+        {
+          id: 3,
+          name: user?.role === "au_pair" ? "The Brown Family" : "Sophie Laurent",
+          age: user?.role === "au_pair" ? 29 : 23,
+          location: user?.role === "au_pair" ? "Paris, France" : "Lyon, France",
+          images: [
+            "https://images.pexels.com/photos/15817434/pexels-photo-15817434.jpeg",
+            "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
+          ],
+          bio:
+            user?.role === "au_pair"
+              ? "Multicultural family looking for an au pair to help with our 3 children and share cultural experiences."
+              : "Passionate about education and child development. Fluent in French and English, love teaching and learning new cultures.",
+          languages: ["French", "English", "Italian"],
+          rating: 4.7,
+          experience:
+            user?.role === "au_pair" ? "4 years hosting" : "1 year childcare",
+          interests: ["Education", "Culture", "Books", "Swimming"],
+          availability: "Available from May 2025",
+          verified: true,
+        },
+      ];
+      setMatches(mockMatches);
+      //
+    } catch (error) {
+      console.error("Error fetching matches:", error);
+      // setError("Failed to load matches. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLike = (matchId: number) => {
     console.log("Liked:", matchId);

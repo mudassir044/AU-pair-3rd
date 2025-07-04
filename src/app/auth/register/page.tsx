@@ -114,10 +114,15 @@ function RegisterForm() {
 
       const response = await authAPI.register(userData);
 
-      // Store user data
+      // Store user data and redirect to onboarding
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+
+      // Emit custom event for auth state change
+      window.dispatchEvent(new CustomEvent("authStateChanged"));
 
       router.push("/onboarding");
+      router.refresh(); // Force refresh to update navigation state
     } catch (error: any) {
       console.error("Registration failed:", error);
       setErrors({

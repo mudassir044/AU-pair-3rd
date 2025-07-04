@@ -1,12 +1,13 @@
-
 "use client"
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Upload, FileText, CheckCircle, XCircle, Clock } from 'lucide-react'
-import Link from 'next/link'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { useRouter } from 'next/navigation'
+import { Upload, FileText, CheckCircle, XCircle, Clock, Download, Eye } from 'lucide-react'
+import { documentsAPI } from '@/lib/api'
 
 interface User {
   id: string
@@ -146,7 +147,7 @@ export default function DocumentsPage() {
 
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Documents</h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Upload Documents */}
           <Card>
@@ -175,7 +176,7 @@ export default function DocumentsPage() {
                   Supported formats: PDF, JPG, PNG, DOC, DOCX (max 10MB)
                 </p>
               </div>
-              
+
               <div className="mt-6">
                 <h3 className="font-medium mb-3">Required Documents:</h3>
                 <ul className="space-y-2">
@@ -208,7 +209,7 @@ export default function DocumentsPage() {
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       {getStatusIcon(doc.status)}
                       <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(doc.status)}`}>
@@ -216,9 +217,10 @@ export default function DocumentsPage() {
                       </span>
                     </div>
                   </div>
-                ))}
-              </div>
-              
+                ))
+            }
+            </div>
+
               <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
                   Document Review Process
