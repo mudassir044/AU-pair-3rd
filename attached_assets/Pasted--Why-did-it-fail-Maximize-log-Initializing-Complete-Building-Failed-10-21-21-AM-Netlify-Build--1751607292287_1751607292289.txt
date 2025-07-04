@@ -1,0 +1,100 @@
+
+Why did it fail?
+
+
+
+
+Maximize log
+Initializing
+Complete
+Building
+Failed
+10:21:21 AM: Netlify Build                                                 
+10:21:21 AM: ────────────────────────────────────────────────────────────────
+10:21:21 AM: ​
+10:21:21 AM: ❯ Version
+10:21:21 AM:   @netlify/build 33.5.0
+10:21:21 AM: ​
+10:21:21 AM: ❯ Flags
+10:21:21 AM:   accountId: 685414adabe1d4ef643dc4a8
+10:21:21 AM:   baseRelDir: true
+10:21:21 AM:   buildId: 686764c0eef09d000809638e
+10:21:21 AM:   deployId: 686764c0eef09d0008096390
+10:21:22 AM: ​
+10:21:22 AM: ❯ Current directory
+10:21:22 AM:   /opt/build/repo
+10:21:22 AM: ​
+10:21:22 AM: ❯ Config file
+10:21:22 AM:   No config file was defined: using default values.
+10:21:22 AM: ​
+10:21:22 AM: ❯ Context
+10:21:22 AM:   production
+10:21:22 AM: ​
+10:21:22 AM: ❯ Installing extensions
+10:21:22 AM:    - neon
+10:21:22 AM:    - simpleanalytics
+10:21:24 AM: ​
+10:21:24 AM: ❯ Using Next.js Runtime - v5.11.4
+10:21:24 AM: ​
+10:21:24 AM: ❯ Loading plugins
+10:21:24 AM:    - @netlify/plugin-emails@1.1.1 from Netlify app
+10:21:24 AM: ​
+10:21:24 AM: ❯ Loading extensions
+10:21:24 AM:    - neon
+10:21:24 AM:    - simpleanalytics
+10:21:27 AM: Next.js cache restored
+10:21:27 AM: ​
+10:21:27 AM: Build command from Netlify app                                
+10:21:27 AM: ────────────────────────────────────────────────────────────────
+10:21:27 AM: ​
+10:21:27 AM: $ npm run build
+10:21:27 AM: > au-pair-frontend@0.1.0 build
+10:21:27 AM: > next build
+10:21:27 AM:    ▲ Next.js 15.1.5
+10:21:27 AM:    - Environments: .env.local
+10:21:27 AM:    Creating an optimized production build ...
+10:21:35 AM:  ✓ Compiled successfully
+10:21:35 AM:    Linting and checking validity of types ...
+10:21:39 AM: Failed to compile.
+10:21:39 AM: 
+10:21:39 AM: ./src/app/dashboard/page.tsx:105:19
+10:21:39 AM: Type error: Property 'role' does not exist on type 'User'.
+10:21:39 AM:   103 |     {
+10:21:39 AM:   104 |       id: 1,
+10:21:39 AM: > 105 |       name: user?.role === "au_pair" ? "The Johnson Family" : "Maria Rodriguez",
+10:21:39 AM:       |                   ^
+10:21:39 AM:   106 |       location: user?.role === "au_pair" ? "New York, USA" : "Madrid, Spain",
+10:21:39 AM:   107 |       match: 95,
+10:21:39 AM:   108 |       image: "https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg",
+10:21:39 AM: Static worker exited with code: 1 and signal: null
+10:21:40 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+10:21:40 AM: ​
+10:21:40 AM: "build.command" failed                                        
+10:21:40 AM: ────────────────────────────────────────────────────────────────
+10:21:40 AM: ​
+10:21:40 AM:   Error message
+10:21:40 AM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+10:21:40 AM: ​
+10:21:40 AM:   Error location
+10:21:40 AM:   In Build command from Netlify app:
+10:21:40 AM:   npm run build
+10:21:40 AM: ​
+10:21:40 AM:   Resolved config
+10:21:40 AM:   build:
+10:21:40 AM:     command: npm run build
+10:21:40 AM:     commandOrigin: ui
+10:21:40 AM:     environment:
+10:21:40 AM:       - NETLIFY_EMAILS_DIRECTORY
+10:21:40 AM:       - NETLIFY_EMAILS_SECRET
+10:21:40 AM:     publish: /opt/build/repo/.next
+10:21:40 AM:     publishOrigin: ui
+10:21:40 AM:   plugins:
+10:21:40 AM:     - inputs: {}
+10:21:40 AM:       origin: ui
+10:21:40 AM:       package: "@netlify/plugin-nextjs"
+10:21:40 AM:     - inputs: {}
+10:21:40 AM:       origin: ui
+10:21:40 AM:       package: "@netlify/plugin-emails"
+10:21:40 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+10:21:40 AM: Failing build: Failed to build site
+10:21:40 AM: Finished processing build request in 35.182s
