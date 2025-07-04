@@ -1,0 +1,97 @@
+🧨 What’s causing the Netlify build to fail?
+❌ Primary Error (the one breaking the build)
+nginx
+Copy
+Edit
+Type error: Property 'firstName' does not exist on type 'User'.
+Line:
+
+tsx
+Copy
+Edit
+{getGreeting()}, {user.firstName || user.name}! 👋
+This line assumes that user has a property called firstName, but TypeScript says:
+
+"Nope, I don't see firstName in the User type."
+
+✅ What You Can Do to Fix It (2 simple options)
+✅ Option 1: Add firstName to the TypeScript User type
+Find the file where the User type is defined (usually in types.ts, auth.ts, or lib/types.ts).
+
+Update it like this:
+
+ts
+Copy
+Edit
+export type User = {
+  id: string
+  email: string
+  name?: string
+  role?: string
+  firstName?: string // 👈 Add this line
+}
+Now your code:
+
+tsx
+Copy
+Edit
+{getGreeting()}, {user.firstName || user.name}! 👋
+will work fine.
+
+✅ Option 2: Use only user.name (temporary quick fix)
+If you're not using firstName anywhere else (yet), change this line:
+
+tsx
+Copy
+Edit
+{getGreeting()}, {user.firstName || user.name}! 👋
+to:
+
+tsx
+Copy
+Edit
+{getGreeting()}, {user.name}! 👋
+It’s a quick way to make the build pass.
+
+⚠️ Side Notes (Other Warnings You Should Fix Soon)
+1. 🔄 useAuthStore not exported
+csharp
+Copy
+Edit
+'imported as useAuthStore' but not exported from '@/lib/utils'
+✅ Solution: Either remove the import if it’s unused or fix it by checking if you defined and exported useAuthStore correctly in lib/utils.ts.
+
+2. 🤖 Type Inference Issues Mean You Should Sync Backend & Frontend
+If you're storing user data like firstName, role, etc. in Supabase → make sure that:
+
+Your frontend types reflect all fields you're saving
+
+You’re fetching full user data (not just from Supabase Auth but also from your users table, if that’s where firstName lives)
+
+If firstName is in your database but not in Supabase Auth, you need to:
+
+ts
+Copy
+Edit
+// example fetch to get the full user profile
+const { data: profile } = await supabase
+  .from('users')
+  .select('*')
+  .eq('id', user.id)
+  .single()
+Then use profile.firstName instead of user.firstName.
+
+🧠 Should Backend Do Anything for This?
+No backend change is needed for this particular error. This is frontend only:
+
+You either define the field in your TypeScript types
+
+Or stop using it in your JSX
+
+✅ What You Should Do Right Now
+Go to your User type and add firstName?: string.
+
+Re-deploy on Netlify.
+
+If you still get errors, try removing all user.firstName usage and just use user.name.
+
