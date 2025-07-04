@@ -9,7 +9,7 @@ import {
   MessageCircle,
   Users,
   Calendar,
-  User,
+  User as LucideUser,
   Star,
   MapPin,
   Languages,
@@ -24,16 +24,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-interface User {
-  id: string;
-  email: string;
-  role: "au_pair" | "host_family" | "admin";
-  name: string;
-  firstName?: string;
-  lastName?: string;
-  profileCompletion?: number;
-}
+import { User } from '@/store/authStore';
 
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading } = useAuthStore();
