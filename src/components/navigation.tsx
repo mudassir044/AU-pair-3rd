@@ -4,23 +4,22 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useAuthStore, useNavigationStore } from "@/lib/utils";
+import { useAuthStore } from "@/store/authStore";
+import { useNavigationStore } from "@/lib/utils";
 import { Heart, Menu, X, User, LogOut, MessageCircle, Users, FileText, Calendar } from "lucide-react";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isAuthenticated, isLoading, logout, checkAuth } = useAuthStore();
+  const { user, isAuthenticated, isLoading, logout } = useAuthStore();
   const { setCurrentPath } = useNavigationStore();
 
   useEffect(() => {
     setCurrentPath(pathname);
   }, [pathname, setCurrentPath]);
 
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+  
 
   const handleLogout = async () => {
     try {
