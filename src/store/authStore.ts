@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -47,7 +46,7 @@ export const useAuthStore = create<AuthState>()(
           }
 
           const data = await response.json();
-          
+
           set({
             user: data.user,
             token: data.token,
