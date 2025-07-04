@@ -33,8 +33,29 @@ export const useAuthStore = create<AuthState>()(
       login: async (email: string, password: string) => {
         set({ isLoading: true });
         try {
-          // This would be your actual API call
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+          // Mock authentication for testing (replace with real API when backend is ready)
+          if (email === 'test@example.com' && password === 'password123') {
+            const mockUser = {
+              id: '1',
+              email: email,
+              name: 'Test User',
+              firstName: 'Test',
+              role: 'au_pair' as const,
+              profileComplete: false,
+            };
+
+            set({
+              user: mockUser,
+              token: 'mock-token-123',
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            return;
+          }
+
+          // Try real API if mock credentials don't match
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+          const response = await fetch(`${apiUrl}/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -43,7 +64,7 @@ export const useAuthStore = create<AuthState>()(
           });
 
           if (!response.ok) {
-            throw new Error('Login failed');
+            throw new Error('Invalid email or password');
           }
 
           const data = await response.json();
