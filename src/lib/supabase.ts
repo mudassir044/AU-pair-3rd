@@ -1,8 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
 
+// Create client with fallback values
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
@@ -10,6 +13,15 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: true,
   },
 });
+
+// Check if Supabase is properly configured
+export const isSupabaseConfigured = () => {
+  return (
+    supabaseUrl !== "https://placeholder.supabase.co" &&
+    supabaseAnonKey !== "placeholder-key" &&
+    supabaseUrl.includes("supabase.co")
+  );
+};
 
 // Database types based on your Supabase schema
 export interface Database {
