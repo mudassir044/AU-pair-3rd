@@ -22,7 +22,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import { authAPI } from "@/lib/api";
+import { useAuthStore } from "@/store/authStore";
 
 function RegisterForm() {
   const [step, setStep] = useState(1);
