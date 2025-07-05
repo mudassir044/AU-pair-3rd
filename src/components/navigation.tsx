@@ -118,7 +118,7 @@ export function Navigation() {
                       <User className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {user?.name || user?.email}
+                      {user?.full_name || user?.email}
                     </span>
                   </div>
                   <Button
