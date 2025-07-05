@@ -108,28 +108,20 @@ function RegisterForm() {
 
     setLoading(true);
     try {
-      const userData = {
-        ...formData,
-        role: selectedRole,
-      };
+      await signup(formData.email, formData.password, {
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        role: selectedRole!,
+      });
 
-      const response = await authAPI.register(userData);
-
-      // Store user data and redirect to onboarding
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
-
-      // Emit custom event for auth state change
-      window.dispatchEvent(new CustomEvent("authStateChanged"));
-
-      router.push("/onboarding");
-      router.refresh(); // Force refresh to update navigation state
+      // Small delay to ensure state is updated
+      setTimeout(() => {
+        router.push("/onboarding");
+        router.refresh();
+      }, 100);
     } catch (error: any) {
       console.error("Registration failed:", error);
       setErrors({
-        general:
-          error.response?.data?.message ||
-          "Registration failed. Please try again.",
+        general: error.message || "Registration failed. Please try again.",
       });
     } finally {
       setLoading(false);
