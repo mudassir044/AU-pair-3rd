@@ -77,6 +77,32 @@ export const documentService = {
   // Get user's documents
   async getUserDocuments(): Promise<Document[]> {
     try {
+      if (!isSupabaseConfigured()) {
+        // Demo mode - return mock data
+        return [
+          {
+            id: "demo-1",
+            user_id: "demo-user",
+            type: "PASSPORT",
+            file_name: "passport.pdf",
+            file_path: "demo/passport.pdf",
+            status: "VERIFIED",
+            uploaded_at: new Date().toISOString(),
+            verified_at: new Date().toISOString(),
+            notes: "Demo document",
+          },
+          {
+            id: "demo-2",
+            user_id: "demo-user",
+            type: "ID",
+            file_name: "id-card.jpg",
+            file_path: "demo/id-card.jpg",
+            status: "PENDING",
+            uploaded_at: new Date().toISOString(),
+          },
+        ];
+      }
+
       const { data, error } = await supabase
         .from("documents")
         .select("*")
