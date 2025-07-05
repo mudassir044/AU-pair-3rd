@@ -1,15 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
-    domains: [
-      "images.unsplash.com",
-      "via.placeholder.com",
-      "images.pexels.com",
-    ],
-  },
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-  },
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
 };
 
-module.exports = nextConfig;
+export default nextConfig;
