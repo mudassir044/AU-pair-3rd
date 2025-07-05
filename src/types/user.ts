@@ -1,10 +1,9 @@
-
 export interface User {
   id: string;
   email: string;
+  full_name?: string;
   firstName?: string;
   lastName?: string;
-  full_name?: string;
   displayName?: string;
   profilePicture?: string;
   role: 'au_pair' | 'host_family' | 'admin';
