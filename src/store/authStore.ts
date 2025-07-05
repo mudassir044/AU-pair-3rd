@@ -1,12 +1,13 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface User {
   id: string;
   email: string;
-  name: string;
+  full_name?: string;
+  name?: string;
   firstName?: string;
-  role: 'au_pair' | 'host_family' | 'admin';
+  role: "au_pair" | "host_family" | "admin";
   profileComplete: boolean;
 }
 
@@ -34,19 +35,19 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           // Mock authentication for testing (replace with real API when backend is ready)
-          if (email === 'test@example.com' && password === 'password123') {
+          if (email === "test@example.com" && password === "password123") {
             const mockUser = {
-              id: '1',
+              id: "1",
               email: email,
-              name: 'Test User',
-              firstName: 'Test',
-              role: 'au_pair' as const,
+              name: "Test User",
+              firstName: "Test",
+              role: "au_pair" as const,
               profileComplete: false,
             };
 
             set({
               user: mockUser,
-              token: 'mock-token-123',
+              token: "mock-token-123",
               isAuthenticated: true,
               isLoading: false,
             });
@@ -54,17 +55,18 @@ export const useAuthStore = create<AuthState>()(
           }
 
           // Try real API if mock credentials don't match
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+          const apiUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
           const response = await fetch(`${apiUrl}/auth/login`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ email, password }),
           });
 
           if (!response.ok) {
-            throw new Error('Invalid email or password');
+            throw new Error("Invalid email or password");
           }
 
           const data = await response.json();
@@ -106,12 +108,12 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       partialize: (state) => ({
         user: state.user,
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
-    }
-  )
+    },
+  ),
 );
