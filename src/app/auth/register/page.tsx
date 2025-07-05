@@ -47,6 +47,7 @@ function RegisterForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { signup } = useAuthStore();
 
   useEffect(() => {
     const role = searchParams.get("role");
