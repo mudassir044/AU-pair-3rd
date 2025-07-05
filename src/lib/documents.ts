@@ -40,6 +40,16 @@ export const documentService = {
     notes?: string,
   ): Promise<DocumentUploadResult> {
     try {
+      if (!isSupabaseConfigured()) {
+        // Demo mode - simulate upload
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return {
+          documentId: `demo-doc-${Date.now()}`,
+          filePath: `demo/${file.name}`,
+          signedUrl: "#",
+        };
+      }
+
       const base64File = await fileToBase64(file);
 
       const { data, error } = await supabase.functions.invoke(
