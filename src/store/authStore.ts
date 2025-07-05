@@ -203,6 +203,24 @@ export const useAuthStore = create<AuthState>()(
       ) => {
         set({ isLoading: true });
         try {
+          // Fallback demo signup if Supabase not configured
+          if (!isSupabaseConfigured()) {
+            const demoUser = {
+              id: `demo-user-${Date.now()}`,
+              email: email,
+              full_name: userData.full_name || "Demo User",
+              role: userData.role || ("au_pair" as const),
+              profile_complete: false,
+            };
+
+            set({
+              user: demoUser,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            return;
+          }
+
           // Sign up with Supabase Auth
           const { data, error } = await supabase.auth.signUp({
             email,
