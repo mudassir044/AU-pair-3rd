@@ -40,6 +40,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true });
 
+          // Check if Supabase is configured
+          if (!isSupabaseConfigured()) {
+            console.warn("Supabase not configured, using demo mode");
+            set({ isLoading: false, initialized: true });
+            return;
+          }
+
           // Get current session
           const {
             data: { session },
