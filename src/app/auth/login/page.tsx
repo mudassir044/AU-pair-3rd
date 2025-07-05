@@ -6,7 +6,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useAuthStore } from "@/store/authStore";
 
 export default function LoginPage() {
@@ -22,9 +28,13 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      router.push("/dashboard");
-    } catch (err) {
-      setError("Invalid email or password");
+      // Small delay to ensure state is updated
+      setTimeout(() => {
+        router.push("/dashboard");
+        router.refresh();
+      }, 100);
+    } catch (err: any) {
+      setError(err.message || "Invalid email or password");
     }
   };
 
@@ -66,11 +76,7 @@ export default function LoginPage() {
             {error && (
               <div className="text-red-500 text-sm text-center">{error}</div>
             )}
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
