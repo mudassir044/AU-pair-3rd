@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { supabase, isSupabaseConfigured } from "./supabase";
 
 export type DocumentType = "ID" | "PASSPORT" | "VISA" | "PROFILE_PHOTO";
 export type DocumentStatus = "PENDING" | "VERIFIED" | "REJECTED";
