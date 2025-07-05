@@ -136,6 +136,29 @@ export const useAuthStore = create<AuthState>()(
       login: async (email: string, password: string) => {
         set({ isLoading: true });
         try {
+          // Fallback demo login if Supabase not configured
+          if (!isSupabaseConfigured()) {
+            // Demo credentials
+            if (email === "demo@example.com" && password === "demo123") {
+              const demoUser = {
+                id: "demo-user-1",
+                email: email,
+                full_name: "Demo User",
+                role: "au_pair" as const,
+                profile_complete: false,
+              };
+
+              set({
+                user: demoUser,
+                isAuthenticated: true,
+                isLoading: false,
+              });
+              return;
+            } else {
+              throw new Error("Demo mode: Use demo@example.com / demo123");
+            }
+          }
+
           const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
