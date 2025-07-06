@@ -13,25 +13,12 @@ import Image from "next/image";
 export default function AboutPage() {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
-      role: "CEO & Co-Founder",
+      name: "Muhammad Mudassir",
+      role: "CEO & Founder",
       image:
-        "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-      bio: "Former au pair turned entrepreneur with 10+ years in cultural exchange programs.",
-    },
-    {
-      name: "Maria Rodriguez",
-      role: "Head of Community",
-      image:
-        "https://images.pexels.com/photos/2714626/pexels-photo-2714626.jpeg",
-      bio: "Passionate about connecting cultures and building meaningful relationships worldwide.",
-    },
-    {
-      name: "David Chen",
-      role: "CTO",
-      image:
-        "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-      bio: "Technology leader focused on creating safe and intuitive platforms for global communities.",
+        "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fd9aeeea2a4cc448fadf20b9e15cae63e?format=webp&width=800",
+      bio: "Visionary entrepreneur passionate about connecting cultures and creating meaningful international experiences through technology.",
+      linkedin: "https://www.linkedin.com/in/muhammad-mudassir-1036a51aa/",
     },
   ];
 
