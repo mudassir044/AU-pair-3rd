@@ -68,7 +68,9 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          localStorage.setItem("auth-token", data.token);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("auth-token", data.token);
+          }
         } catch (error) {
           set({ isLoading: false });
           throw error;
