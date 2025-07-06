@@ -2,38 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Heart,
   X,
   Star,
   MapPin,
-  Languages,
   Users,
   Calendar,
   MessageCircle,
   Filter,
   Search,
+  Loader2,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-interface User {
-  id: string;
-  email: string;
-  role: "au_pair" | "host_family" | "admin";
-  name: string;
-}
+import { useAuthStore } from "@/store/authStore";
 
 interface Match {
-  id: number;
+  id: string;
   name: string;
   age: number;
   location: string;
@@ -45,6 +33,7 @@ interface Match {
   interests: string[];
   availability: string;
   verified: boolean;
+  profilePhoto?: string;
 }
 
 export default function MatchesPage() {
@@ -121,7 +110,8 @@ export default function MatchesPage() {
         },
         {
           id: 3,
-          name: user?.role === "au_pair" ? "The Brown Family" : "Sophie Laurent",
+          name:
+            user?.role === "au_pair" ? "The Brown Family" : "Sophie Laurent",
           age: user?.role === "au_pair" ? 29 : 23,
           location: user?.role === "au_pair" ? "Paris, France" : "Lyon, France",
           images: [
