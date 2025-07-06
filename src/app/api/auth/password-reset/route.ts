@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     // Call your backend API for password reset
     const response = await fetch(
-      `${process.env.BACKEND_URL}/auth/password-reset`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/password-reset`,
       {
         method: "POST",
         headers: {

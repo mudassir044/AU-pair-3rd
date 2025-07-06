@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     // Call your backend API for password update
     const response = await fetch(
-      `${process.env.BACKEND_URL}/auth/update-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/update-password`,
       {
         method: "POST",
         headers: {
