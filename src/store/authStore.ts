@@ -150,11 +150,15 @@ export const useAuthStore = create<AuthState>()(
 
       setToken: (token: string) => {
         set({ token });
-        localStorage.setItem("auth-token", token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("auth-token", token);
+        }
       },
 
       clearAuth: () => {
-        localStorage.removeItem("auth-token");
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("auth-token");
+        }
         set({
           user: null,
           token: null,
