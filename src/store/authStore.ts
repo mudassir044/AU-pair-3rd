@@ -26,141 +26,140 @@ interface AuthState {
   initialize: () => void;
 }
 
-export const useAuthStore = create<AuthState>()((set, get) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  token: null,
-  initialized: false,
-
-  initialize: () => {
-    set({ initialized: true });
-  },
-
-  login: async (email: string, password: string) => {
-    set({ isLoading: true });
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Invalid email or password");
-      }
-
-      const data = await response.json();
-
-      set({
-        user: data.user,
-        token: data.token,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-
-      // Store token in localStorage for API calls
-      if (typeof window !== "undefined") {
-        localStorage.setItem("auth-token", data.token);
-      }
-    } catch (error) {
-      set({ isLoading: false });
-      throw error;
-    }
-  },
-
-  register: async (userData: any) => {
-    set({ isLoading: true });
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
-      }
-
-      const data = await response.json();
-
-      set({
-        user: data.user,
-        token: data.token,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-
-      // Store token in localStorage for API calls
-      if (typeof window !== "undefined") {
-        localStorage.setItem("auth-token", data.token);
-      }
-    } catch (error) {
-      set({ isLoading: false });
-      throw error;
-    }
-  },
-
-  logout: async () => {
-    try {
-      const token =
-        typeof window !== "undefined"
-          ? localStorage.getItem("auth-token")
-          : null;
-      if (token) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("auth-token");
-      }
-      set({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-      });
-    }
-  },
-
-  setUser: (user: User) => {
-    set({ user, isAuthenticated: true });
-  },
-
-  setToken: (token: string) => {
-    set({ token });
-    if (typeof window !== "undefined") {
-      localStorage.setItem("auth-token", token);
-    }
-  },
-
-  clearAuth: () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth-token");
-    }
-    set({
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
       user: null,
-      token: null,
       isAuthenticated: false,
-    });
-  },
-}));
+      isLoading: false,
+      token: null,
+      initialized: false,
+
+      initialize: () => {
+        set({ initialized: true });
+      },
+
+      login: async (email: string, password: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email, password }),
+            },
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Invalid email or password");
+          }
+
+          const data = await response.json();
+
+          set({
+            user: data.user,
+            token: data.token,
+            isAuthenticated: true,
+            isLoading: false,
+          });
+
+          // Store token in localStorage for API calls
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("auth-token", data.token);
+          }
+        } catch (error) {
+          set({ isLoading: false });
+          throw error;
+        }
+      },
+
+      register: async (userData: any) => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(userData),
+            },
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Registration failed");
+          }
+
+          const data = await response.json();
+
+          set({
+            user: data.user,
+            token: data.token,
+            isAuthenticated: true,
+            isLoading: false,
+          });
+
+          // Store token in localStorage for API calls
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("auth-token", data.token);
+          }
+        } catch (error) {
+          set({ isLoading: false });
+          throw error;
+        }
+      },
+
+      logout: async () => {
+        try {
+          const token = typeof window !== 'undefined' ? localStorage.getItem("auth-token") : null;
+          if (token) {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Logout error:", error);
+        } finally {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem("auth-token");
+          }
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+        }
+      },
+
+      setUser: (user: User) => {
+        set({ user, isAuthenticated: true });
+      },
+
+      setToken: (token: string) => {
+        set({ token });
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("auth-token", token);
+        }
+      },
+
+      clearAuth: () => {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem("auth-token");
+        }
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+        });
+      },
+    }));
