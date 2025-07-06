@@ -81,10 +81,10 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: "10,000+", label: "Successful Matches" },
+    { number: "24/7", label: "Support Available" },
     { number: "50+", label: "Countries" },
-    { number: "4.9/5", label: "Average Rating" },
-    { number: "95%", label: "Satisfaction Rate" },
+    { number: "Safe", label: "Verified Platform" },
+    { number: "100%", label: "Satisfaction Focused" },
   ];
 
   return (
