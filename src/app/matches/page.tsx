@@ -60,444 +60,294 @@ export default function MatchesPage() {
       setError("");
 
       const token = localStorage.getItem("auth-token");
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/matches`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch matches');
+        throw new Error("Failed to fetch matches");
       }
 
       const data = await response.json();
       setMatches(data.matches || []);
     } catch (error) {
-      console.error('Error fetching matches:', error);
-      setError('Unable to load matches. Please try again.');
+      console.error("Error fetching matches:", error);
+      setError("Unable to load matches. Please try again.");
       setMatches([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAction = async (matchId: string, action: 'like' | 'pass') => {
+  const handleAction = async (matchId: string, action: "like" | "pass") => {
     try {
       const token = localStorage.getItem("auth-token");
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches/${matchId}/${action}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/matches/${matchId}/${action}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       if (response.ok) {
-        {
-          id: 1,
-          name:
-            user?.role === "au_pair" ? "The Johnson Family" : "Maria Rodriguez",
-          age: user?.role === "au_pair" ? 35 : 22,
-          location:
-            user?.role === "au_pair" ? "New York, USA" : "Madrid, Spain",
-          images: [
-            "https://images.pexels.com/photos/755049/pexels-photo-755049.jpeg",
-            "https://images.pexels.com/photos/7579306/pexels-photo-7579306.jpeg",
-          ],
-          bio:
-            user?.role === "au_pair"
-              ? "Loving family with 2 children (ages 5 and 8). Looking for a caring au pair to help with childcare and become part of our family."
-              : "Experienced au pair with 3 years of childcare experience. Love outdoor activities, teaching languages, and creating fun learning experiences.",
-          languages: ["English", "Spanish"],
-          rating: 4.9,
-          experience:
-            user?.role === "au_pair" ? "3 years hosting" : "3 years childcare",
-          interests: ["Sports", "Cooking", "Travel", "Music"],
-          availability: "Available from March 2025",
-          verified: true,
-        },
-        {
-          id: 2,
-          name: user?.role === "au_pair" ? "The Smith Family" : "Anna Mueller",
-          age: user?.role === "au_pair" ? 32 : 24,
-          location: user?.role === "au_pair" ? "London, UK" : "Berlin, Germany",
-          images: [
-            "https://images.pexels.com/photos/2714626/pexels-photo-2714626.jpeg",
-            "https://images.pexels.com/photos/8828605/pexels-photo-8828605.jpeg",
-          ],
-          bio:
-            user?.role === "au_pair"
-              ? "Active family seeking an au pair who loves outdoor activities. We have 1 toddler and enjoy weekend adventures."
-              : "Creative and energetic au pair who loves arts, crafts, and outdoor adventures. Great with toddlers and school-age children.",
-          languages: ["English", "German"],
-          rating: 4.8,
-          experience:
-            user?.role === "au_pair" ? "2 years hosting" : "2 years childcare",
-          interests: ["Art", "Hiking", "Photography", "Languages"],
-          availability: "Available from April 2025",
-          verified: true,
-        },
-        {
-          id: 3,
-          name:
-            user?.role === "au_pair" ? "The Brown Family" : "Sophie Laurent",
-          age: user?.role === "au_pair" ? 29 : 23,
-          location: user?.role === "au_pair" ? "Paris, France" : "Lyon, France",
-          images: [
-            "https://images.pexels.com/photos/15817434/pexels-photo-15817434.jpeg",
-            "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-          ],
-          bio:
-            user?.role === "au_pair"
-              ? "Multicultural family looking for an au pair to help with our 3 children and share cultural experiences."
-              : "Passionate about education and child development. Fluent in French and English, love teaching and learning new cultures.",
-          languages: ["French", "English", "Italian"],
-          rating: 4.7,
-          experience:
-            user?.role === "au_pair" ? "4 years hosting" : "1 year childcare",
-          interests: ["Education", "Culture", "Books", "Swimming"],
-          availability: "Available from May 2025",
-          verified: true,
-        },
-      ];
-      setMatches(mockMatches);
-      //
+        // Move to next match
+        if (currentIndex < matches.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+        } else {
+          // Fetch more matches or show completion message
+          fetchMatches();
+          setCurrentIndex(0);
+        }
+      }
     } catch (error) {
-      console.error("Error fetching matches:", error);
-      // setError("Failed to load matches. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error("Error handling match action:", error);
     }
   };
 
-  const handleLike = (matchId: number) => {
-    console.log("Liked:", matchId);
-    nextMatch();
-    // Here you would call API to record the like
-  };
+  const handleMessage = async (matchId: string) => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/conversations`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ matchId }),
+        },
+      );
 
-  const handlePass = (matchId: number) => {
-    console.log("Passed:", matchId);
-    nextMatch();
-    // Here you would call API to record the pass
-  };
-
-  const nextMatch = () => {
-    if (currentIndex < matches.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      // Show "no more matches" state
-      setCurrentIndex(matches.length);
+      if (response.ok) {
+        const data = await response.json();
+        router.push(`/messages?conversation=${data.conversationId}`);
+      }
+    } catch (error) {
+      console.error("Error starting conversation:", error);
     }
   };
 
-  const handleMessage = (matchId: number) => {
-    router.push(`/messages?new=${matchId}`);
-  };
-
-  if (!user) {
+  if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-gray-600 dark:text-gray-300">Loading matches...</p>
+        </div>
       </div>
     );
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (!user) return null;
 
   const currentMatch = matches[currentIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-950 dark:via-background dark:to-blue-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Discover{" "}
-                {user.role === "au_pair" ? "Host Families" : "Au Pairs"}
-              </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mt-1">
-                Find your perfect cultural exchange match
-              </p>
-            </div>
-            <div className="flex space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => setShowFilters(!showFilters)}
-              >
-                <Filter className="w-4 h-4 mr-2" />
-                Filters
-              </Button>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </div>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Discover Matches
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            Find your perfect{" "}
+            {user.role === "au_pair" ? "host family" : "au pair"} match
+          </p>
         </div>
 
-        {currentIndex >= matches.length ? (
-          // No more matches state
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-32 h-32 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-8">
-              <Heart className="w-16 h-16 text-gray-400" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              No More Matches
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-center mb-8 max-w-md">
-              You've seen all available matches. Check back later for new
-              profiles or adjust your preferences.
-            </p>
-            <div className="flex space-x-4">
-              <Button onClick={() => setCurrentIndex(0)}>Review Matches</Button>
-              <Button variant="outline" onClick={() => router.push("/profile")}>
-                Update Preferences
-              </Button>
-            </div>
+        {/* Search and Filter */}
+        <div className="mb-6 flex gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search matches..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
-        ) : (
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Match Card */}
-            <div className="lg:col-span-2">
-              <Card className="shadow-2xl border-0 overflow-hidden">
-                <div className="relative">
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2"
+          >
+            <Filter className="w-4 h-4" />
+            Filters
+          </Button>
+        </div>
+
+        {error ? (
+          <Card className="text-center p-8">
+            <CardContent>
+              <p className="text-red-600 mb-4">{error}</p>
+              <Button onClick={fetchMatches}>Try Again</Button>
+            </CardContent>
+          </Card>
+        ) : matches.length === 0 ? (
+          <Card className="text-center p-8">
+            <CardContent>
+              <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                No matches found
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                We&apos;re still looking for your perfect match. Check back
+                soon!
+              </p>
+              <Button onClick={fetchMatches}>Refresh Matches</Button>
+            </CardContent>
+          </Card>
+        ) : currentMatch ? (
+          <div className="max-w-2xl mx-auto">
+            <Card className="shadow-xl">
+              <CardHeader className="p-0">
+                <div className="relative h-80 rounded-t-lg overflow-hidden">
                   <Image
-                    src={currentMatch.images[0]}
+                    src={
+                      currentMatch.profilePhoto ||
+                      currentMatch.images[0] ||
+                      "/placeholder-avatar.jpg"
+                    }
                     alt={currentMatch.name}
-                    width={800}
-                    height={400}
-                    className="w-full h-96 object-cover"
+                    fill
+                    className="object-cover"
                   />
-                  <div className="absolute top-4 right-4 flex space-x-2">
-                    {currentMatch.verified && (
-                      <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center">
-                        <Star className="w-4 h-4 mr-1" />
-                        Verified
-                      </div>
-                    )}
-                    <div className="bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center">
-                      <Star className="w-4 h-4 mr-1 text-yellow-400 fill-current" />
-                      {currentMatch.rating}
+                  {currentMatch.verified && (
+                    <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                      Verified
                     </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
-                    <h2 className="text-3xl font-bold mb-2">
+                  )}
+                </div>
+              </CardHeader>
+
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <CardTitle className="text-2xl">
                       {currentMatch.name}
-                    </h2>
-                    <div className="flex items-center space-x-4 text-sm">
-                      <span className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {currentMatch.age} years old
-                      </span>
-                      <span className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {currentMatch.location}
-                      </span>
-                    </div>
+                    </CardTitle>
+                    <p className="text-gray-600 dark:text-gray-300 flex items-center mt-1">
+                      <MapPin className="w-4 h-4 mr-1" />
+                      {currentMatch.location}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                    <span className="font-medium">{currentMatch.rating}</span>
                   </div>
                 </div>
 
-                <CardContent className="p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">About</h3>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {currentMatch.bio}
-                      </p>
-                    </div>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  {currentMatch.bio}
+                </p>
 
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Languages</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {currentMatch.languages.map((language, index) => (
-                          <span
-                            key={index}
-                            className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium"
-                          >
-                            {language}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Interests</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {currentMatch.interests.map((interest, index) => (
-                          <span
-                            key={index}
-                            className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"
-                          >
-                            {interest}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white">
-                          Experience
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                          {currentMatch.experience}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white">
-                          Availability
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                          {currentMatch.availability}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Action Buttons */}
-              <div className="flex justify-center space-x-6 mt-8">
-                <Button
-                  onClick={() => handlePass(currentMatch.id)}
-                  variant="outline"
-                  size="lg"
-                  className="w-16 h-16 rounded-full border-2 border-red-300 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950"
-                >
-                  <X className="w-8 h-8 text-red-500" />
-                </Button>
-                <Button
-                  onClick={() => handleMessage(currentMatch.id)}
-                  variant="outline"
-                  size="lg"
-                  className="w-16 h-16 rounded-full border-2 border-blue-300 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950"
-                >
-                  <MessageCircle className="w-8 h-8 text-blue-500" />
-                </Button>
-                <Button
-                  onClick={() => handleLike(currentMatch.id)}
-                  size="lg"
-                  className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 shadow-lg"
-                >
-                  <Heart className="w-8 h-8 text-white" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Match Progress */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-lg">Progress</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Matches viewed</span>
-                        <span>
-                          {currentIndex + 1} of {matches.length}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                      Languages
+                    </h4>
+                    <div className="flex flex-wrap gap-1">
+                      {currentMatch.languages.map((lang, index) => (
+                        <span
+                          key={index}
+                          className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs"
+                        >
+                          {lang}
                         </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-primary to-blue-600 h-2 rounded-full transition-all duration-300"
-                          style={{
-                            width: `${((currentIndex + 1) / matches.length) * 100}%`,
-                          }}
-                        ></div>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                      Experience
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      {currentMatch.experience}
+                    </p>
+                  </div>
+                </div>
 
-              {/* Quick Tips */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    Tips for Better Matches
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5"></div>
-                      <p>
-                        Complete your profile to get better match suggestions
-                      </p>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5"></div>
-                      <p>Upload multiple photos to showcase your personality</p>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5"></div>
-                      <p>Be specific about your preferences and expectations</p>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5"></div>
-                      <p>Send personalized messages when you match</p>
-                    </div>
+                <div className="mb-6">
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                    Interests
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {currentMatch.interests.map((interest, index) => (
+                      <span
+                        key={index}
+                        className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
+                      >
+                        {interest}
+                      </span>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Recent Likes */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-lg">Recent Activity</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                        <Heart className="w-4 h-4 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">New match!</p>
-                        <p className="text-xs text-gray-500">2 hours ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                        <MessageCircle className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Message received</p>
-                        <p className="text-xs text-gray-500">5 hours ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
-                        <Users className="w-4 h-4 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Profile viewed</p>
-                        <p className="text-xs text-gray-500">1 day ago</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 mb-6">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  {currentMatch.availability}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-4">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => handleAction(currentMatch.id, "pass")}
+                    className="flex-1 border-red-200 text-red-600 hover:bg-red-50"
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Pass
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => handleMessage(currentMatch.id)}
+                    className="flex-1"
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Message
+                  </Button>
+                  <Button
+                    size="lg"
+                    onClick={() => handleAction(currentMatch.id, "like")}
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                  >
+                    <Heart className="w-5 h-5 mr-2" />
+                    Like
+                  </Button>
+                </div>
+
+                <div className="mt-4 text-center text-sm text-gray-500">
+                  {currentIndex + 1} of {matches.length} matches
+                </div>
+              </CardContent>
+            </Card>
           </div>
+        ) : (
+          <Card className="text-center p-8">
+            <CardContent>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                That&apos;s all for now!
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                You&apos;ve seen all available matches. Check back later for new
+                matches.
+              </p>
+              <Button onClick={fetchMatches}>Refresh Matches</Button>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
