@@ -117,7 +117,10 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          const token = localStorage.getItem("auth-token");
+          const token =
+            typeof window !== "undefined"
+              ? localStorage.getItem("auth-token")
+              : null;
           if (token) {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
               method: "POST",
@@ -130,7 +133,9 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
-          localStorage.removeItem("auth-token");
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("auth-token");
+          }
           set({
             user: null,
             token: null,
