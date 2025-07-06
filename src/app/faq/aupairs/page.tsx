@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChevronDown, ChevronUp, Heart, ArrowLeft } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { FAQItem } from "@/components/faq-item";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ for Au Pairs | Au Pair Connect",
+  description:
+    "Your guide to becoming an au pair and making the most of your cultural exchange experience.",
+};
 
 export default function AuPairsFAQPage() {
   const faqs = [
