@@ -104,6 +104,7 @@ export default function RootLayout({
           <AuthInitializer />
           <Navigation />
           <main className="min-h-screen">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
