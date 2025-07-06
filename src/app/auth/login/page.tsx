@@ -28,11 +28,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      // Small delay to ensure state is updated
-      setTimeout(() => {
-        router.push("/dashboard");
-        router.refresh();
-      }, 100);
+      router.push("/dashboard");
+      router.refresh();
     } catch (err: any) {
       setError(err.message || "Invalid email or password");
     }
