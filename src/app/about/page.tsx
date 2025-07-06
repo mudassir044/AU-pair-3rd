@@ -85,8 +85,8 @@ export default function AboutPage() {
 
   const stats = [
     { number: "50+", label: "Countries", icon: Globe },
-    { number: "10,000+", label: "Successful Matches", icon: Heart },
-    { number: "4.9/5", label: "Average Rating", icon: Award },
+    { number: "Safe", label: "Verified Platform", icon: Heart },
+    { number: "Trusted", label: "Secure Matching", icon: Award },
     { number: "24/7", label: "Support Available", icon: Shield },
   ];
 
