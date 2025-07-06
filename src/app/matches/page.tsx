@@ -37,33 +37,63 @@ interface Match {
 }
 
 export default function MatchesPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-
-    if (userData && token) {
-      setUser(JSON.parse(userData));
-      fetchMatches();
-    } else {
+    if (!authLoading && !isAuthenticated) {
       router.push("/auth/login");
+    } else if (isAuthenticated && user) {
+      fetchMatches();
     }
-  }, [router]);
+  }, [authLoading, isAuthenticated, user, router]);
 
   const fetchMatches = async () => {
     try {
       setLoading(true);
-      // const response = await profileAPI.getMatches();
-      // setMatches(response.data || []);
-      //Mock matches data
-      const mockMatches: Match[] = [
+      setError("");
+
+      const token = localStorage.getItem("auth-token");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch matches');
+      }
+
+      const data = await response.json();
+      setMatches(data.matches || []);
+    } catch (error) {
+      console.error('Error fetching matches:', error);
+      setError('Unable to load matches. Please try again.');
+      setMatches([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAction = async (matchId: string, action: 'like' | 'pass') => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches/${matchId}/${action}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
         {
           id: 1,
           name:
