@@ -394,3 +394,22 @@ function MessagesContent() {
     </div>
   );
 }
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="text-center">
+        <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+        <p className="text-gray-600 dark:text-gray-300">Loading messages...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <MessagesContent />
+    </Suspense>
+  );
+}
