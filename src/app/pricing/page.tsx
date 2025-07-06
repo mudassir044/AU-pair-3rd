@@ -1,415 +1,450 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Check, Star, Zap, Crown, Shield } from "lucide-react";
-import Link from "next/link";
+  Check,
+  Crown,
+  Star,
+  Shield,
+  Zap,
+  Users,
+  ArrowRight,
+} from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+
+type PricingRole = "families" | "aupairs";
+type PlanType = "free" | "standard" | "premium" | "verified";
 
 export default function PricingPage() {
-  const plans = [
+  const [selectedRole, setSelectedRole] = useState<PricingRole>("families");
+  const { user } = useAuthStore();
+
+  const handleUpgrade = async (planType: PlanType) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/upgrade`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth-token")}`,
+          },
+          body: JSON.stringify({
+            role: selectedRole === "families" ? "host_family" : "au_pair",
+            planType,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        // Handle successful upgrade
+        console.log("Upgrade successful");
+      }
+    } catch (error) {
+      console.error("Upgrade failed:", error);
+    }
+  };
+
+  const familyPlans = [
     {
-      name: "Basic",
+      type: "free" as PlanType,
+      name: "Free Plan",
+      price: "$0",
+      period: "/week",
       description: "Perfect for getting started",
-      price: "Free",
-      period: "",
-      icon: Star,
       features: [
-        "Create profile",
-        "Browse 10 matches per day",
-        "Basic messaging",
+        "View 10 unverified Au Pair profiles/week",
+        "Basic profile creation",
+        "Limited search functionality",
         "Email support",
-        "Mobile app access",
       ],
-      limitations: [
-        "Limited matches",
-        "Basic search filters",
-        "Standard support",
-      ],
-      cta: "Get Started",
+      icon: Star,
       popular: false,
+      buttonText: "Get Started",
+      buttonVariant: "outline" as const,
     },
     {
-      name: "Premium",
-      description: "Most popular choice",
-      price: "$29",
-      period: "/month",
-      icon: Zap,
+      type: "standard" as PlanType,
+      name: "Standard Plan",
+      price: "$8.99",
+      period: "/week",
+      description: "Great for active families",
       features: [
-        "Everything in Basic",
-        "Unlimited matches",
+        "View up to 50 verified profiles/week",
+        "Send/receive messages",
+        "Save up to 30 profiles",
         "Advanced search filters",
-        "Priority messaging",
-        "Video call scheduling",
-        "Background check assistance",
-        "24/7 phone support",
-        "Profile boost feature",
+        "Priority support",
       ],
-      limitations: [],
-      cta: "Start Free Trial",
+      icon: Shield,
       popular: true,
+      buttonText: "Upgrade Now",
+      buttonVariant: "default" as const,
     },
     {
-      name: "Premium Plus",
-      description: "For serious seekers",
-      price: "$49",
-      period: "/month",
-      icon: Crown,
+      type: "premium" as PlanType,
+      name: "Premium Plan",
+      price: "$14.99",
+      period: "/week",
+      description: "Complete family solution",
       features: [
-        "Everything in Premium",
-        "Dedicated account manager",
-        "Express verification",
-        "Custom matching service",
-        "Contract review assistance",
-        "Visa support guidance",
-        "Travel planning help",
-        "Premium profile badge",
+        "View 100 verified profiles/week",
+        "Unlimited messaging",
+        "Save unlimited profiles",
+        "Advanced filters",
+        "Priority placement",
+        "Profile Boost",
+        "Early Access Matching",
+        "Concierge Matchmaking Call",
       ],
-      limitations: [],
-      cta: "Contact Sales",
+      icon: Crown,
       popular: false,
+      buttonText: "Go Premium",
+      buttonVariant: "default" as const,
     },
   ];
 
-  const faqs = [
+  const auPairPlans = [
     {
-      question: "Is there really a free plan?",
-      answer:
-        "Yes! Our Basic plan is completely free and allows you to create a profile, browse matches, and send messages. It's a great way to get started and see if our platform is right for you.",
+      type: "free" as PlanType,
+      name: "Free Plan",
+      price: "$0",
+      period: "/month",
+      description: "Start your au pair journey",
+      features: [
+        "Build profile",
+        "Get listed",
+        "Appear in limited searches",
+        "Basic messaging",
+      ],
+      icon: Star,
+      popular: false,
+      buttonText: "Get Started",
+      buttonVariant: "outline" as const,
     },
     {
-      question: "Can I cancel anytime?",
-      answer:
-        "Absolutely. All our paid plans can be cancelled at any time. There are no long-term contracts or cancellation fees.",
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer:
-        "We accept all major credit cards, PayPal, and bank transfers. All payments are processed securely through our encrypted payment system.",
-    },
-    {
-      question: "Do you offer refunds?",
-      answer:
-        "We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, we'll provide a full refund within the first 30 days.",
-    },
-    {
-      question: "What's included in the background check?",
-      answer:
-        "Our background checks include criminal history verification, reference checks, and identity verification. Premium and Premium Plus members receive assistance with the process.",
+      type: "verified" as PlanType,
+      name: "Verified Plan",
+      price: "$4.99",
+      period: "/month",
+      description: "Stand out to families",
+      features: [
+        "Verified badge",
+        "Priority visibility",
+        "Unlimited applications",
+        "Save families",
+        "Advanced messaging",
+        "Profile optimization tips",
+        "24/7 support",
+      ],
+      icon: Zap,
+      popular: true,
+      buttonText: "Get Verified",
+      buttonVariant: "default" as const,
     },
   ];
+
+  const currentPlans = selectedRole === "families" ? familyPlans : auPairPlans;
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const roleToggleVariants = {
+    initial: { x: selectedRole === "families" ? 0 : "100%" },
+    animate: { x: selectedRole === "families" ? 0 : "100%" },
+  };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-950 dark:via-background dark:to-blue-950 py-16 lg:py-24">
+      <section className="relative pt-20 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Simple, Transparent
-              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              Choose Your
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 {" "}
-                Pricing
+                Perfect Plan
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-              Choose the plan that fits your needs. Start free and upgrade when
-              you're ready for more features.
+            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+              Transparent pricing designed for families and au pairs. No hidden
+              fees, cancel anytime.
             </p>
-            <div className="inline-flex items-center bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium">
-              <Shield className="w-4 h-4 mr-2" />
-              30-day money-back guarantee on all paid plans
+
+            {/* Role Toggle */}
+            <div className="relative bg-gray-100 rounded-full p-1 inline-flex mb-16">
+              <motion.div
+                className="absolute top-1 bottom-1 bg-white rounded-full shadow-sm"
+                style={{ width: "calc(50% - 4px)" }}
+                variants={roleToggleVariants}
+                initial="initial"
+                animate="animate"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+              <button
+                onClick={() => setSelectedRole("families")}
+                className={`relative z-10 px-6 py-3 rounded-full font-medium transition-colors flex items-center ${
+                  selectedRole === "families"
+                    ? "text-gray-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Host Families
+              </button>
+              <button
+                onClick={() => setSelectedRole("aupairs")}
+                className={`relative z-10 px-6 py-3 rounded-full font-medium transition-colors flex items-center ${
+                  selectedRole === "aupairs"
+                    ? "text-gray-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Star className="w-4 h-4 mr-2" />
+                Au Pairs
+              </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="py-16 lg:py-20">
+      <section className="pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-            {plans.map((plan, index) => {
-              const Icon = plan.icon;
-              return (
-                <Card
-                  key={index}
-                  className={`relative shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
-                    plan.popular
-                      ? "ring-2 ring-primary border-primary scale-105"
-                      : ""
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-primary to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                        Most Popular
-                      </div>
-                    </div>
-                  )}
-
-                  <CardHeader className="text-center pb-6">
-                    <div
-                      className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
-                        plan.popular
-                          ? "bg-gradient-to-br from-primary to-blue-600"
-                          : "bg-gray-100 dark:bg-gray-800"
-                      }`}
-                    >
-                      <Icon
-                        className={`w-6 h-6 sm:w-8 sm:h-8 ${
-                          plan.popular
-                            ? "text-white"
-                            : "text-gray-600 dark:text-gray-300"
-                        }`}
-                      />
-                    </div>
-                    <CardTitle className="text-xl sm:text-2xl">
-                      {plan.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm sm:text-base mb-4">
-                      {plan.description}
-                    </CardDescription>
-                    <div className="text-center">
-                      <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                        {plan.price}
-                      </span>
-                      <span className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-                        {plan.period}
-                      </span>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="pt-0">
-                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                      {plan.features.map((feature, featureIndex) => (
-                        <div
-                          key={featureIndex}
-                          className="flex items-start space-x-3"
-                        >
-                          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-                            {feature}
-                          </span>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedRole}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className={`grid gap-8 ${
+                currentPlans.length === 2
+                  ? "lg:grid-cols-2 max-w-4xl mx-auto"
+                  : "lg:grid-cols-3"
+              }`}
+            >
+              {currentPlans.map((plan, index) => {
+                const Icon = plan.icon;
+                return (
+                  <motion.div
+                    key={plan.type}
+                    variants={cardVariants}
+                    className="relative"
+                  >
+                    {plan.popular && (
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="absolute -top-4 left-1/2 transform -translate-x-1/2"
+                      >
+                        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                          Most Popular
                         </div>
-                      ))}
-                    </div>
+                      </motion.div>
+                    )}
 
-                    <Button
-                      asChild
-                      className={`w-full h-10 sm:h-12 text-sm sm:text-base ${
+                    <Card
+                      className={`h-full shadow-lg hover:shadow-xl transition-all duration-300 border-0 ${
                         plan.popular
-                          ? "bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700"
-                          : ""
+                          ? "ring-2 ring-blue-500 scale-105"
+                          : "hover:scale-105"
                       }`}
-                      variant={plan.popular ? "default" : "outline"}
                     >
-                      <Link href="/auth/register">{plan.cta}</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                      <CardHeader className="text-center pb-6">
+                        <motion.div
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
+                            plan.popular
+                              ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                              : "bg-gray-100"
+                          }`}
+                        >
+                          <Icon
+                            className={`w-8 h-8 ${
+                              plan.popular ? "text-white" : "text-gray-600"
+                            }`}
+                          />
+                        </motion.div>
+                        <CardTitle className="text-2xl font-bold">
+                          {plan.name}
+                        </CardTitle>
+                        <p className="text-gray-600">{plan.description}</p>
+                        <div className="mt-4">
+                          <span className="text-4xl font-bold text-gray-900">
+                            {plan.price}
+                          </span>
+                          <span className="text-gray-600">{plan.period}</span>
+                        </div>
+                      </CardHeader>
+
+                      <CardContent className="pt-0">
+                        <ul className="space-y-4 mb-8">
+                          {plan.features.map((feature, featureIndex) => (
+                            <motion.li
+                              key={featureIndex}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 * featureIndex }}
+                              className="flex items-start"
+                            >
+                              <Check className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">{feature}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
+
+                        <Button
+                          onClick={() => handleUpgrade(plan.type)}
+                          variant={plan.buttonVariant}
+                          className={`w-full h-12 text-base font-semibold ${
+                            plan.popular
+                              ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                              : ""
+                          }`}
+                        >
+                          {plan.buttonText}
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+
+                        {user && (
+                          <p className="text-sm text-gray-500 text-center mt-3">
+                            Current plan expires: Dec 31, 2024
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Why Choose Our Platform?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Join thousands of families and au pairs who trust our platform for
+              their cultural exchange journey.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Secure & Verified",
+                description:
+                  "All profiles undergo thorough verification for your safety and peace of mind.",
+              },
+              {
+                icon: Zap,
+                title: "Instant Matching",
+                description:
+                  "Our AI-powered algorithm finds perfect matches based on your preferences.",
+              },
+              {
+                icon: Users,
+                title: "24/7 Support",
+                description:
+                  "Round-the-clock customer support throughout your cultural exchange journey.",
+              },
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="text-center"
+                >
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <Icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Features Comparison */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-primary-50 dark:from-gray-900 dark:to-primary-950">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Compare Plans
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              See what's included in each plan to find the perfect fit for your
-              needs.
-            </p>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
-              <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left p-4 sm:p-6 font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
-                    Features
-                  </th>
-                  <th className="text-center p-4 sm:p-6 font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
-                    Basic
-                  </th>
-                  <th className="text-center p-4 sm:p-6 font-semibold text-primary text-sm sm:text-base">
-                    Premium
-                  </th>
-                  <th className="text-center p-4 sm:p-6 font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
-                    Premium Plus
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  {
-                    feature: "Profile Creation",
-                    basic: true,
-                    premium: true,
-                    plus: true,
-                  },
-                  {
-                    feature: "Daily Matches",
-                    basic: "10",
-                    premium: "Unlimited",
-                    plus: "Unlimited",
-                  },
-                  {
-                    feature: "Advanced Filters",
-                    basic: false,
-                    premium: true,
-                    plus: true,
-                  },
-                  {
-                    feature: "Video Calls",
-                    basic: false,
-                    premium: true,
-                    plus: true,
-                  },
-                  {
-                    feature: "Background Check Help",
-                    basic: false,
-                    premium: true,
-                    plus: true,
-                  },
-                  {
-                    feature: "24/7 Support",
-                    basic: false,
-                    premium: true,
-                    plus: true,
-                  },
-                  {
-                    feature: "Dedicated Manager",
-                    basic: false,
-                    premium: false,
-                    plus: true,
-                  },
-                  {
-                    feature: "Visa Assistance",
-                    basic: false,
-                    premium: false,
-                    plus: true,
-                  },
-                ].map((row, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-gray-100 dark:border-gray-700 last:border-b-0"
-                  >
-                    <td className="p-4 sm:p-6 text-gray-900 dark:text-white text-sm sm:text-base">
-                      {row.feature}
-                    </td>
-                    <td className="text-center p-4 sm:p-6 text-sm sm:text-base">
-                      {typeof row.basic === "boolean" ? (
-                        row.basic ? (
-                          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mx-auto" />
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )
-                      ) : (
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {row.basic}
-                        </span>
-                      )}
-                    </td>
-                    <td className="text-center p-4 sm:p-6 text-sm sm:text-base">
-                      {typeof row.premium === "boolean" ? (
-                        row.premium ? (
-                          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mx-auto" />
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )
-                      ) : (
-                        <span className="text-primary font-semibold">
-                          {row.premium}
-                        </span>
-                      )}
-                    </td>
-                    <td className="text-center p-4 sm:p-6 text-sm sm:text-base">
-                      {typeof row.plus === "boolean" ? (
-                        row.plus ? (
-                          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mx-auto" />
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )
-                      ) : (
-                        <span className="text-gray-600 dark:text-gray-300">
-                          {row.plus}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 lg:py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Have questions about our pricing? Here are some common questions
-              and answers.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
-            {faqs.map((faq, index) => (
-              <Card key={index} className="shadow-lg">
-                <CardContent className="pt-6">
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3 text-sm sm:text-base">
-                    {faq.question}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-                    {faq.answer}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-primary to-blue-600">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Join thousands of families and au pairs who trust our platform for
-            their cultural exchange journey.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
+              Ready to Get Started?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Join our global community and discover the life-changing
+              experience of cultural exchange.
+            </p>
             <Button
-              asChild
               size="lg"
               variant="secondary"
-              className="bg-white text-primary hover:bg-gray-100 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
             >
-              <Link href="/auth/register">Start Free Trial</Link>
+              Start Your Journey Today
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="bg-transparent text-white border-white hover:bg-white hover:text-primary px-6 py-3 sm:px-8 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold"
-            >
-              <Link href="/contact">Contact Sales</Link>
-            </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
