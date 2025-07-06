@@ -98,9 +98,9 @@ export default function HomePage() {
               <div className="inline-flex items-center bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 <span className="hidden sm:inline">
-                  Trusted by 10,000+ families worldwide
+                  Building meaningful connections worldwide
                 </span>
-                <span className="sm:hidden">10,000+ families trust us</span>
+                <span className="sm:hidden">Connecting globally</span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight">
                 Find Your Perfect
