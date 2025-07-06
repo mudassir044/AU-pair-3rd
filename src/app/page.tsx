@@ -8,9 +8,7 @@ import {
 } from "@/components/ui/card";
 import {
   Heart,
-  Users,
   Globe,
-  Star,
   Shield,
   Clock,
   CheckCircle,
