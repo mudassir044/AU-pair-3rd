@@ -29,15 +29,8 @@ export default function ContactPage() {
       action: "mailto:support@aupairconnect.com",
     },
     {
-      icon: Phone,
-      title: "Call Us",
-      description: "Speak directly with our support team",
-      info: "+1 (555) 123-4567",
-      action: "tel:+15551234567",
-    },
-    {
       icon: MessageSquare,
-      title: "Live Chat",
+      title: "Chat Option",
       description: "Get instant help through our live chat",
       info: "Available 24/7",
       action: "#",
