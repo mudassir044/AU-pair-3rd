@@ -153,7 +153,21 @@ export default function ContactPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="space-y-4 sm:space-y-6">
+                <form
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
+                  netlify-honeypot="bot-field"
+                  className="space-y-4 sm:space-y-6"
+                >
+                  <input type="hidden" name="form-name" value="contact" />
+                  <p className="hidden">
+                    <label>
+                      Don't fill this out if you're human:{" "}
+                      <input name="bot-field" />
+                    </label>
+                  </p>
+
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label
@@ -164,8 +178,10 @@ export default function ContactPage() {
                       </Label>
                       <Input
                         id="firstName"
+                        name="firstName"
                         placeholder="Enter your first name"
                         className="h-10 sm:h-12"
+                        required
                       />
                     </div>
                     <div className="space-y-2">
@@ -177,8 +193,10 @@ export default function ContactPage() {
                       </Label>
                       <Input
                         id="lastName"
+                        name="lastName"
                         placeholder="Enter your last name"
                         className="h-10 sm:h-12"
+                        required
                       />
                     </div>
                   </div>
@@ -189,9 +207,11 @@ export default function ContactPage() {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="Enter your email"
                       className="h-10 sm:h-12"
+                      required
                     />
                   </div>
 
@@ -201,8 +221,10 @@ export default function ContactPage() {
                     </Label>
                     <Input
                       id="subject"
+                      name="subject"
                       placeholder="What's this about?"
                       className="h-10 sm:h-12"
+                      required
                     />
                   </div>
 
@@ -212,13 +234,18 @@ export default function ContactPage() {
                     </Label>
                     <textarea
                       id="message"
+                      name="message"
                       placeholder="Tell us how we can help..."
                       rows={5}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-sm sm:text-base"
+                      required
                     ></textarea>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 h-10 sm:h-12 text-sm sm:text-base">
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 h-10 sm:h-12 text-sm sm:text-base"
+                  >
                     <Send className="w-4 h-4 mr-2" />
                     Send Message
                   </Button>
