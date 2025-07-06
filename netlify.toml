@@ -10,6 +10,7 @@
   from = "/*"
   to = "/"
   status = 200
+  force = false
 
 [build.environment]
   NODE_VERSION = "18"
