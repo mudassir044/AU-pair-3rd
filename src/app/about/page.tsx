@@ -336,8 +336,8 @@ export default function AboutPage() {
             Ready to Join Our Community?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Be part of a global movement that's changing lives through cultural
-            exchange.
+            Be part of a global movement that&apos;s changing lives through
+            cultural exchange.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
