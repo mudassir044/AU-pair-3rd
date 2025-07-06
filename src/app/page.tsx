@@ -13,7 +13,6 @@ import {
   Clock,
   CheckCircle,
   ArrowRight,
-  Play,
   Star,
 } from "lucide-react";
 import Link from "next/link";
