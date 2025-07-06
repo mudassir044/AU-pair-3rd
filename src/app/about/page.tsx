@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, Users, Globe, Shield, Award, TrendingUp } from "lucide-react";
+import { Heart, Users, Globe, Shield, Award } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
