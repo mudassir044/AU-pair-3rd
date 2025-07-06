@@ -68,7 +68,9 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          localStorage.setItem("auth-token", data.token);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("auth-token", data.token);
+          }
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -104,7 +106,9 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          localStorage.setItem("auth-token", data.token);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("auth-token", data.token);
+          }
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -113,7 +117,10 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          const token = localStorage.getItem("auth-token");
+          const token =
+            typeof window !== "undefined"
+              ? localStorage.getItem("auth-token")
+              : null;
           if (token) {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
               method: "POST",
@@ -126,7 +133,9 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
-          localStorage.removeItem("auth-token");
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("auth-token");
+          }
           set({
             user: null,
             token: null,
@@ -141,11 +150,15 @@ export const useAuthStore = create<AuthState>()(
 
       setToken: (token: string) => {
         set({ token });
-        localStorage.setItem("auth-token", token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("auth-token", token);
+        }
       },
 
       clearAuth: () => {
-        localStorage.removeItem("auth-token");
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("auth-token");
+        }
         set({
           user: null,
           token: null,
@@ -160,6 +173,7 @@ export const useAuthStore = create<AuthState>()(
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      skipHydration: true,
     },
   ),
 );
