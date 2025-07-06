@@ -5,7 +5,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
-import { Heart, Menu, X, User, LogOut, MessageCircle, Users, FileText, Calendar } from "lucide-react";
+import {
+  Heart,
+  Menu,
+  X,
+  User,
+  LogOut,
+  MessageCircle,
+  Users,
+  FileText,
+  Calendar,
+} from "lucide-react";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,29 +23,19 @@ export function Navigation() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuthStore();
 
-  useEffect(() => {
-  }, [pathname]);
-
-
+  useEffect(() => {}, [pathname]);
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('auth-token');
-      if (token) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      logout();
-      router.push('/');
+      await logout();
       setIsMenuOpen(false);
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+      setIsMenuOpen(false);
+      router.push("/");
+      router.refresh();
     }
   };
 

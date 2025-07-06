@@ -6,66 +6,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, Users, Globe, Shield, Award, TrendingUp } from "lucide-react";
+import { Heart, Users, Globe, Shield, Award } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function AboutPage() {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
-      role: "CEO & Co-Founder",
+      name: "Muhammad Mudassir",
+      role: "CEO & Founder",
       image:
-        "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-      bio: "Former au pair turned entrepreneur with 10+ years in cultural exchange programs.",
-    },
-    {
-      name: "Maria Rodriguez",
-      role: "Head of Community",
-      image:
-        "https://images.pexels.com/photos/2714626/pexels-photo-2714626.jpeg",
-      bio: "Passionate about connecting cultures and building meaningful relationships worldwide.",
-    },
-    {
-      name: "David Chen",
-      role: "CTO",
-      image:
-        "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg",
-      bio: "Technology leader focused on creating safe and intuitive platforms for global communities.",
-    },
-  ];
-
-  const milestones = [
-    {
-      year: "2020",
-      title: "Company Founded",
-      description: "Started with a vision to transform cultural exchange",
-    },
-    {
-      year: "2021",
-      title: "1,000 Matches",
-      description:
-        "Reached our first major milestone of successful connections",
-    },
-    {
-      year: "2022",
-      title: "Global Expansion",
-      description: "Expanded to 25 countries with verified host families",
-    },
-    {
-      year: "2023",
-      title: "10,000+ Users",
-      description: "Grew our community to over 10,000 active members",
-    },
-    {
-      year: "2024",
-      title: "AI Matching",
-      description: "Launched AI-powered matching for better compatibility",
-    },
-    {
-      year: "2025",
-      title: "50+ Countries",
-      description: "Operating in 50+ countries with 24/7 support",
+        "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fd9aeeea2a4cc448fadf20b9e15cae63e?format=webp&width=800",
+      bio: "Visionary entrepreneur passionate about connecting cultures and creating meaningful international experiences through technology.",
+      linkedin: "https://www.linkedin.com/in/muhammad-mudassir-1036a51aa/",
     },
   ];
 
@@ -98,8 +51,8 @@ export default function AboutPage() {
 
   const stats = [
     { number: "50+", label: "Countries", icon: Globe },
-    { number: "10,000+", label: "Successful Matches", icon: Heart },
-    { number: "4.9/5", label: "Average Rating", icon: Award },
+    { number: "Safe", label: "Verified Platform", icon: Heart },
+    { number: "Trusted", label: "Secure Matching", icon: Award },
     { number: "24/7", label: "Support Available", icon: Shield },
   ];
 
@@ -242,89 +195,58 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Meet Our Team
+              Meet Our Founder
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Our diverse team brings together expertise in cultural exchange,
-              technology, and community building.
+              Leading the vision to transform cultural exchange through
+              technology and meaningful connections.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="flex justify-center">
             {teamMembers.map((member, index) => (
               <Card
                 key={index}
-                className="text-center shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                className="text-center shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 max-w-md"
               >
                 <CardHeader>
                   <Image
                     src={member.image}
                     alt={member.name}
-                    width={150}
-                    height={150}
-                    className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
+                    width={200}
+                    height={200}
+                    className="w-40 h-40 rounded-full object-cover mx-auto mb-4"
                   />
-                  <CardTitle className="text-xl">{member.name}</CardTitle>
-                  <CardDescription className="text-primary font-semibold">
+                  <CardTitle className="text-2xl">{member.name}</CardTitle>
+                  <CardDescription className="text-primary font-semibold text-lg">
                     {member.role}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     {member.bio}
                   </p>
+                  {member.linkedin && (
+                    <Button asChild variant="outline">
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center"
+                      >
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                        Connect on LinkedIn
+                      </a>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Our Journey
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              From a simple idea to a global platform connecting thousands of
-              families and au pairs.
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary to-blue-600"></div>
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`relative flex items-center mb-12 ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
-                >
-                  <div
-                    className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}
-                  >
-                    <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 bg-primary rounded-full"></div>
-                          <CardTitle className="text-lg">
-                            {milestone.year}
-                          </CardTitle>
-                        </div>
-                        <CardDescription className="font-semibold text-gray-900 dark:text-white">
-                          {milestone.title}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {milestone.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white dark:border-gray-900"></div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -336,8 +258,8 @@ export default function AboutPage() {
             Ready to Join Our Community?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Be part of a global movement that's changing lives through cultural
-            exchange.
+            Be part of a global movement that&apos;s changing lives through
+            cultural exchange.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button

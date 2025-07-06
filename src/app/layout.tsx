@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import AuthInitializer from "@/components/auth-initializer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -36,6 +37,13 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://au-pair-connect.netlify.app"),
   alternates: {
     canonical: "/",
+  },
+  icons: {
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=32",
+    shortcut:
+      "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=32",
+    apple:
+      "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=180",
   },
   openGraph: {
     type: "website",
@@ -96,6 +104,7 @@ export default function RootLayout({
           <AuthInitializer />
           <Navigation />
           <main className="min-h-screen">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

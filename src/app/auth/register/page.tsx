@@ -22,7 +22,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import { authAPI } from "@/lib/api";
+import { useAuthStore } from "@/store/authStore";
 
 function RegisterForm() {
   const [step, setStep] = useState(1);
@@ -47,6 +47,7 @@ function RegisterForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { register: registerUser } = useAuthStore();
 
   useEffect(() => {
     const role = searchParams.get("role");
@@ -108,27 +109,25 @@ function RegisterForm() {
     setLoading(true);
     try {
       const userData = {
-        ...formData,
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        fullName: `${formData.firstName} ${formData.lastName}`,
+        country: formData.country,
+        city: formData.city,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
         role: selectedRole,
       };
 
-      const response = await authAPI.register(userData);
-
-      // Store user data and redirect to onboarding
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
-
-      // Emit custom event for auth state change
-      window.dispatchEvent(new CustomEvent("authStateChanged"));
-
+      await registerUser(userData);
       router.push("/onboarding");
-      router.refresh(); // Force refresh to update navigation state
+      router.refresh();
     } catch (error: any) {
       console.error("Registration failed:", error);
       setErrors({
-        general:
-          error.response?.data?.message ||
-          "Registration failed. Please try again.",
+        general: error.message || "Registration failed. Please try again.",
       });
     } finally {
       setLoading(false);

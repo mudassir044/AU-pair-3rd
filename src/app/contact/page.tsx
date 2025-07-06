@@ -29,15 +29,8 @@ export default function ContactPage() {
       action: "mailto:support@aupairconnect.com",
     },
     {
-      icon: Phone,
-      title: "Call Us",
-      description: "Speak directly with our support team",
-      info: "+1 (555) 123-4567",
-      action: "tel:+15551234567",
-    },
-    {
       icon: MessageSquare,
-      title: "Live Chat",
+      title: "Chat Option",
       description: "Get instant help through our live chat",
       info: "Available 24/7",
       action: "#",
@@ -107,7 +100,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16 lg:mb-20">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16 lg:mb-20">
             {contactMethods.map((method, index) => {
               const Icon = method.icon;
               return (
@@ -153,7 +146,14 @@ export default function ContactPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="space-y-4 sm:space-y-6">
+                <form
+                  className="space-y-4 sm:space-y-6"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    // Handle form submission here
+                    console.log("Form submitted");
+                  }}
+                >
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label
@@ -164,8 +164,10 @@ export default function ContactPage() {
                       </Label>
                       <Input
                         id="firstName"
+                        name="firstName"
                         placeholder="Enter your first name"
                         className="h-10 sm:h-12"
+                        required
                       />
                     </div>
                     <div className="space-y-2">
@@ -177,8 +179,10 @@ export default function ContactPage() {
                       </Label>
                       <Input
                         id="lastName"
+                        name="lastName"
                         placeholder="Enter your last name"
                         className="h-10 sm:h-12"
+                        required
                       />
                     </div>
                   </div>
@@ -189,9 +193,11 @@ export default function ContactPage() {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="Enter your email"
                       className="h-10 sm:h-12"
+                      required
                     />
                   </div>
 
@@ -201,8 +207,10 @@ export default function ContactPage() {
                     </Label>
                     <Input
                       id="subject"
+                      name="subject"
                       placeholder="What's this about?"
                       className="h-10 sm:h-12"
+                      required
                     />
                   </div>
 
@@ -212,13 +220,18 @@ export default function ContactPage() {
                     </Label>
                     <textarea
                       id="message"
+                      name="message"
                       placeholder="Tell us how we can help..."
                       rows={5}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-sm sm:text-base"
+                      required
                     ></textarea>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 h-10 sm:h-12 text-sm sm:text-base">
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary-600 hover:to-blue-700 h-10 sm:h-12 text-sm sm:text-base"
+                  >
                     <Send className="w-4 h-4 mr-2" />
                     Send Message
                   </Button>
