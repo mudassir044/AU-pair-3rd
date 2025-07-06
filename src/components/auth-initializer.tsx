@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
 
 export default function AuthInitializer() {
-  const { initialize, initialized, setUser, setToken } = useAuthStore();
+  const { initialize, initialized, setUser, setToken, isAuthenticated } =
+    useAuthStore();
 
   useEffect(() => {
     if (!initialized) {
@@ -12,21 +13,25 @@ export default function AuthInitializer() {
 
       // Check for existing auth data in localStorage
       const token = localStorage.getItem("auth-token");
-      const storedUser = localStorage.getItem("auth-storage");
+      const storedUserData = localStorage.getItem("auth-storage");
 
-      if (token && storedUser) {
+      if (token && storedUserData && !isAuthenticated) {
         try {
-          const parsedData = JSON.parse(storedUser);
-          if (parsedData.state?.user) {
+          const parsedData = JSON.parse(storedUserData);
+          if (parsedData.state?.user && parsedData.state?.isAuthenticated) {
             setUser(parsedData.state.user);
             setToken(token);
+            console.log("Auth state restored:", parsedData.state.user);
           }
         } catch (error) {
           console.error("Error parsing stored auth data:", error);
+          // Clear corrupted data
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("auth-storage");
         }
       }
     }
-  }, [initialize, initialized, setUser, setToken]);
+  }, [initialize, initialized, setUser, setToken, isAuthenticated]);
 
   return null;
 }
