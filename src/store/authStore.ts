@@ -26,9 +26,7 @@ interface AuthState {
   initialize: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set, get) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
       user: null,
       isAuthenticated: false,
       isLoading: false,
@@ -68,7 +66,7 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          if (typeof window !== "undefined") {
+          if (typeof window !== 'undefined') {
             localStorage.setItem("auth-token", data.token);
           }
         } catch (error) {
@@ -106,7 +104,7 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          if (typeof window !== "undefined") {
+          if (typeof window !== 'undefined') {
             localStorage.setItem("auth-token", data.token);
           }
         } catch (error) {
@@ -117,10 +115,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          const token =
-            typeof window !== "undefined"
-              ? localStorage.getItem("auth-token")
-              : null;
+          const token = typeof window !== 'undefined' ? localStorage.getItem("auth-token") : null;
           if (token) {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
               method: "POST",
@@ -133,7 +128,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
-          if (typeof window !== "undefined") {
+          if (typeof window !== 'undefined') {
             localStorage.removeItem("auth-token");
           }
           set({
@@ -150,13 +145,13 @@ export const useAuthStore = create<AuthState>()(
 
       setToken: (token: string) => {
         set({ token });
-        if (typeof window !== "undefined") {
+        if (typeof window !== 'undefined') {
           localStorage.setItem("auth-token", token);
         }
       },
 
       clearAuth: () => {
-        if (typeof window !== "undefined") {
+        if (typeof window !== 'undefined') {
           localStorage.removeItem("auth-token");
         }
         set({
