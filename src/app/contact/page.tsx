@@ -147,20 +147,13 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <form
-                  name="contact"
-                  method="POST"
-                  data-netlify="true"
-                  netlify-honeypot="bot-field"
                   className="space-y-4 sm:space-y-6"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    // Handle form submission here
+                    console.log("Form submitted");
+                  }}
                 >
-                  <input type="hidden" name="form-name" value="contact" />
-                  <p className="hidden">
-                    <label>
-                      Don't fill this out if you're human:{" "}
-                      <input name="bot-field" />
-                    </label>
-                  </p>
-
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label
