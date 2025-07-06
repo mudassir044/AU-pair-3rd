@@ -38,6 +38,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=32",
+    shortcut:
+      "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=32",
+    apple:
+      "https://cdn.builder.io/api/v1/image/assets%2Fc43a92b8265a4538b0f81284c0c6d60c%2Fe6c5fc029d6c450fac4e27c1e81d6315?format=webp&width=180",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
