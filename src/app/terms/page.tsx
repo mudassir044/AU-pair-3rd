@@ -7,6 +7,13 @@ import {
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | Au Pair Connect",
+  description:
+    "Read our terms of service for using the Au Pair Connect platform.",
+};
 
 export default function TermsPage() {
   const sections = [
