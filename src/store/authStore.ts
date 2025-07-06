@@ -68,7 +68,7 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             localStorage.setItem("auth-token", data.token);
           }
         } catch (error) {
@@ -106,7 +106,7 @@ export const useAuthStore = create<AuthState>()(
           });
 
           // Store token in localStorage for API calls
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             localStorage.setItem("auth-token", data.token);
           }
         } catch (error) {
@@ -117,7 +117,10 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          const token = typeof window !== 'undefined' ? localStorage.getItem("auth-token") : null;
+          const token =
+            typeof window !== "undefined"
+              ? localStorage.getItem("auth-token")
+              : null;
           if (token) {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
               method: "POST",
@@ -130,7 +133,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             localStorage.removeItem("auth-token");
           }
           set({
@@ -147,13 +150,13 @@ export const useAuthStore = create<AuthState>()(
 
       setToken: (token: string) => {
         set({ token });
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           localStorage.setItem("auth-token", token);
         }
       },
 
       clearAuth: () => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           localStorage.removeItem("auth-token");
         }
         set({
@@ -162,4 +165,15 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
         });
       },
-    }));
+    }),
+    {
+      name: "auth-storage",
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
+      }),
+      skipHydration: true,
+    },
+  ),
+);
