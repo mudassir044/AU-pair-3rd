@@ -108,16 +108,22 @@ function RegisterForm() {
 
     setLoading(true);
     try {
-      await signup(formData.email, formData.password, {
-        full_name: `${formData.firstName} ${formData.lastName}`,
-        role: selectedRole!,
-      });
+      const userData = {
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        fullName: `${formData.firstName} ${formData.lastName}`,
+        country: formData.country,
+        city: formData.city,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        role: selectedRole,
+      };
 
-      // Small delay to ensure state is updated
-      setTimeout(() => {
-        router.push("/onboarding");
-        router.refresh();
-      }, 100);
+      await registerUser(userData);
+      router.push("/onboarding");
+      router.refresh();
     } catch (error: any) {
       console.error("Registration failed:", error);
       setErrors({
