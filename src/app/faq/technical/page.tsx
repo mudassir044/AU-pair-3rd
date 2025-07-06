@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChevronDown, ChevronUp, Settings, ArrowLeft } from "lucide-react";
+import { Settings, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { FAQItem } from "@/components/faq-item";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Technical Support | Au Pair Connect",
+  description:
+    "Get help with platform features, account issues, and technical problems.",
+};
 
 export default function TechnicalFAQPage() {
   const faqs = [
