@@ -22,40 +22,6 @@ export default function AboutPage() {
     },
   ];
 
-  const milestones = [
-    {
-      year: "2020",
-      title: "Company Founded",
-      description: "Started with a vision to transform cultural exchange",
-    },
-    {
-      year: "2021",
-      title: "1,000 Matches",
-      description:
-        "Reached our first major milestone of successful connections",
-    },
-    {
-      year: "2022",
-      title: "Global Expansion",
-      description: "Expanded to 25 countries with verified host families",
-    },
-    {
-      year: "2023",
-      title: "10,000+ Users",
-      description: "Grew our community to over 10,000 active members",
-    },
-    {
-      year: "2024",
-      title: "AI Matching",
-      description: "Launched AI-powered matching for better compatibility",
-    },
-    {
-      year: "2025",
-      title: "50+ Countries",
-      description: "Operating in 50+ countries with 24/7 support",
-    },
-  ];
-
   const values = [
     {
       icon: Shield,
