@@ -1,6 +1,10 @@
 [build]
   command = "npm run build"
+  functions = "netlify/functions"
   publish = ".next"
+
+[functions]
+  external_node_modules = ["sharp"]
 
 [[redirects]]
   from = "/*"
