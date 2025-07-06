@@ -279,56 +279,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Our Journey
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              From a simple idea to a global platform connecting thousands of
-              families and au pairs.
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary to-blue-600"></div>
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`relative flex items-center mb-12 ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
-                >
-                  <div
-                    className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}
-                  >
-                    <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 bg-primary rounded-full"></div>
-                          <CardTitle className="text-lg">
-                            {milestone.year}
-                          </CardTitle>
-                        </div>
-                        <CardDescription className="font-semibold text-gray-900 dark:text-white">
-                          {milestone.title}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {milestone.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white dark:border-gray-900"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-primary to-blue-600">
         <div className="container mx-auto px-4 text-center">
