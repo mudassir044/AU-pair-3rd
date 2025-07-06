@@ -1,6 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ for Host Families | Au Pair Connect",
+  description:
+    "Find answers to common questions about hosting an au pair through Au Pair Connect.",
+};
 import {
   Card,
   CardContent,
