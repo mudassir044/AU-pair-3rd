@@ -33,7 +33,6 @@ export function Navigation() {
       router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
-      // Force logout locally even if remote logout fails
       setIsMenuOpen(false);
       router.push("/");
       router.refresh();
