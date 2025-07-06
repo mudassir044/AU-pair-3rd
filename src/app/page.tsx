@@ -118,7 +118,7 @@ export default function HomePage() {
                 meaningful cultural exchanges. Safe, trusted, and life-changing
                 experiences await.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-start">
                 <Button
                   asChild
                   size="lg"
@@ -131,21 +131,6 @@ export default function HomePage() {
                     <span className="hidden sm:inline">Get Started Today</span>
                     <span className="sm:hidden">Get Started</span>
                     <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-                  </Link>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold border-2 hover:bg-primary hover:text-white transition-all duration-300 btn-touch"
-                >
-                  <Link
-                    href="#how-it-works"
-                    className="flex items-center justify-center"
-                  >
-                    <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="hidden sm:inline">Watch Demo</span>
-                    <span className="sm:hidden">Demo</span>
                   </Link>
                 </Button>
               </div>
