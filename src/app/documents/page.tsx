@@ -1,15 +1,35 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
+import {
+  Upload,
+  FileText,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Download,
+  Eye,
+} from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
-import DocumentUpload from "@/components/document-upload";
-import DocumentList from "@/components/document-list";
+
+interface Document {
+  id: number;
+  name: string;
+  type: string;
+  status: "pending" | "approved" | "rejected";
+  uploadDate: string;
+  size?: string;
+}
 
 export default function DocumentsPage() {
   const { user, isAuthenticated, isLoading } = useAuthStore();
   const router = useRouter();
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -17,25 +37,43 @@ export default function DocumentsPage() {
     }
   }, [isAuthenticated, isLoading, router]);
 
-  const handleUploadComplete = () => {
-    // Trigger refresh of document list
-    setRefreshTrigger((prev) => prev + 1);
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
+  const mockDocuments: Document[] = [
+    {
+      id: 1,
+      name: "Passport Copy",
+      type: "Identity",
+      status: "approved",
+      uploadDate: "2025-01-10",
+      size: "2.4 MB",
+    },
+    {
+      id: 2,
+      name: "Background Check",
+      type: "Security",
+      status: "pending",
+      uploadDate: "2025-01-12",
+      size: "1.8 MB",
+    },
+    {
+      id: 3,
+      name: "First Aid Certificate",
+      type: "Certification",
+      status: "approved",
+      uploadDate: "2025-01-08",
+      size: "0.9 MB",
+    },
+    {
+      id: 4,
+      name: "Reference Letter",
+      type: "Reference",
+      status: "rejected",
+      uploadDate: "2025-01-05",
+      size: "1.2 MB",
+    },
+  ];
 
   const requiredDocuments =
-    user.role === "au_pair"
+    user?.role === "au_pair"
       ? [
           "Passport Copy",
           "Background Check",
@@ -52,55 +90,144 @@ export default function DocumentsPage() {
           "Insurance Documents",
         ];
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // In real app, upload file via API
+      console.log("Uploading file:", file.name);
+      alert(`File "${file.name}" uploaded successfully!`);
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "approved":
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
+      case "rejected":
+        return <XCircle className="w-5 h-5 text-red-500" />;
+      default:
+        return <Clock className="w-5 h-5 text-yellow-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
+        return "text-green-600 bg-green-100";
+      case "rejected":
+        return "text-red-600 bg-red-100";
+      default:
+        return "text-yellow-600 bg-yellow-100";
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Documents
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Upload and manage your verification documents
-          </p>
-        </div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+          Documents
+        </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Upload Section */}
-          <div className="space-y-6">
-            <DocumentUpload onUploadComplete={handleUploadComplete} />
-
-            {/* Required Documents Info */}
-            <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-4">
-                Required Documents for{" "}
-                {user.role === "au_pair" ? "Au Pairs" : "Host Families"}:
-              </h3>
-              <ul className="space-y-2">
-                {requiredDocuments.map((doc, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center text-sm text-blue-800 dark:text-blue-200"
-                  >
-                    <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
-                    {doc}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
-                <p className="text-sm text-blue-700 dark:text-blue-300">
-                  <strong>Note:</strong> Documents are typically reviewed within
-                  2-3 business days. You'll receive an email notification once
-                  the review is complete.
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Upload Documents */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload Documents</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
+                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                  Drag and drop your files here, or click to browse
+                </p>
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id="file-upload"
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                />
+                <label htmlFor="file-upload">
+                  <Button variant="outline" className="cursor-pointer">
+                    Choose Files
+                  </Button>
+                </label>
+                <p className="text-xs text-gray-500 mt-2">
+                  Supported formats: PDF, JPG, PNG, DOC, DOCX (max 10MB)
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* Documents List */}
-          <div>
-            <DocumentList refreshTrigger={refreshTrigger} />
-          </div>
+              <div className="mt-6">
+                <h3 className="font-medium mb-3">Required Documents:</h3>
+                <ul className="space-y-2">
+                  {requiredDocuments.map((doc, index) => (
+                    <li key={index} className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full mr-3"></div>
+                      {doc}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Document Status */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Document Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {mockDocuments.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <FileText className="w-8 h-8 text-gray-400" />
+                      <div>
+                        <p className="font-medium">{doc.name}</p>
+                        <p className="text-sm text-gray-500">
+                          {doc.type} • {doc.size} •{" "}
+                          {new Date(doc.uploadDate).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      {getStatusIcon(doc.status)}
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusColor(doc.status)}`}
+                      >
+                        {doc.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                  Document Review Process
+                </h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Documents are typically reviewed within 2-3 business days.
+                  You'll receive an email notification once the review is
+                  complete.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
