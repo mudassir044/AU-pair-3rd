@@ -39,7 +39,7 @@ interface Message {
   type: "text" | "image" | "file";
 }
 
-export default function MessagesPage() {
+function MessagesContent() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversation, setCurrentConversation] = useState<string | null>(
