@@ -400,17 +400,26 @@ export default function DashboardPage() {
                     {mockMatches.map((match) => (
                       <div
                         key={match.id}
-                        className="flex items-center space-x-4 p-4 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 p-4 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                       >
-                        <Image
-                          src={match.image}
-                          alt={match.name}
-                          width={60}
-                          height={60}
-                          className="w-15 h-15 rounded-full object-cover"
-                        />
+                        <div className="flex sm:block items-center space-x-4 sm:space-x-0">
+                          <Image
+                            src={match.image}
+                            alt={match.name}
+                            width={60}
+                            height={60}
+                            className="w-12 h-12 sm:w-15 sm:h-15 rounded-full object-cover flex-shrink-0"
+                          />
+                          <div className="sm:hidden text-right">
+                            <p className="font-bold text-lg text-green-600">
+                              {match.match}%
+                            </p>
+                            <p className="text-xs text-gray-500">match</p>
+                          </div>
+                        </div>
+
                         <div className="flex-1">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
                             <p className="font-semibold text-gray-900 dark:text-white">
                               {match.name}
                             </p>
@@ -426,15 +435,15 @@ export default function DashboardPage() {
                               {match.status}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 mb-2">
                             {match.location}
                           </p>
-                          <div className="flex items-center space-x-4 mt-1">
+                          <div className="flex flex-wrap items-center gap-3">
                             <div className="flex items-center">
                               <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
                               <span className="text-sm">{match.rating}</span>
                             </div>
-                            <div className="flex space-x-1">
+                            <div className="flex flex-wrap gap-1">
                               {match.languages.map((lang, index) => (
                                 <span
                                   key={index}
@@ -446,12 +455,19 @@ export default function DashboardPage() {
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
+
+                        <div className="hidden sm:block text-right">
                           <p className="font-bold text-lg text-green-600">
                             {match.match}%
                           </p>
                           <p className="text-xs text-gray-500">match</p>
                           <Button size="sm" className="mt-2">
+                            View Profile
+                          </Button>
+                        </div>
+
+                        <div className="sm:hidden w-full">
+                          <Button size="sm" className="w-full">
                             View Profile
                           </Button>
                         </div>
