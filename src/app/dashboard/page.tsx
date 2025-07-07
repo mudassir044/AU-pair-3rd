@@ -379,73 +379,91 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {mockMatches.map((match) => (
-                    <div
-                      key={match.id}
-                      className="flex items-center space-x-4 p-4 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <Image
-                        src={match.image}
-                        alt={match.name}
-                        width={60}
-                        height={60}
-                        className="w-15 h-15 rounded-full object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {match.name}
+                {mockMatches.length > 0 ? (
+                  <div className="space-y-4">
+                    {mockMatches.map((match) => (
+                      <div
+                        key={match.id}
+                        className="flex items-center space-x-4 p-4 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                      >
+                        <Image
+                          src={match.image}
+                          alt={match.name}
+                          width={60}
+                          height={60}
+                          className="w-15 h-15 rounded-full object-cover"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              {match.name}
+                            </p>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                match.status === "new"
+                                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                  : match.status === "contacted"
+                                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                              }`}
+                            >
+                              {match.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-500">
+                            {match.location}
                           </p>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              match.status === "new"
-                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                                : match.status === "contacted"
-                                  ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                                  : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                            }`}
-                          >
-                            {match.status}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                          {match.location}
-                        </p>
-                        <div className="flex items-center space-x-4 mt-1">
-                          <div className="flex items-center">
-                            <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-                            <span className="text-sm">{match.rating}</span>
-                          </div>
-                          <div className="flex space-x-1">
-                            {match.languages.map((lang, index) => (
-                              <span
-                                key={index}
-                                className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
-                              >
-                                {lang}
-                              </span>
-                            ))}
+                          <div className="flex items-center space-x-4 mt-1">
+                            <div className="flex items-center">
+                              <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
+                              <span className="text-sm">{match.rating}</span>
+                            </div>
+                            <div className="flex space-x-1">
+                              {match.languages.map((lang, index) => (
+                                <span
+                                  key={index}
+                                  className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                                >
+                                  {lang}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
+                        <div className="text-right">
+                          <p className="font-bold text-lg text-green-600">
+                            {match.match}%
+                          </p>
+                          <p className="text-xs text-gray-500">match</p>
+                          <Button size="sm" className="mt-2">
+                            View Profile
+                          </Button>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-bold text-lg text-green-600">
-                          {match.match}%
-                        </p>
-                        <p className="text-xs text-gray-500">match</p>
-                        <Button size="sm" className="mt-2">
-                          View Profile
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6">
-                  <Button asChild className="w-full">
-                    <Link href="/matches">View All Matches</Link>
-                  </Button>
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Heart className="mx-auto h-16 w-16 text-gray-300 dark:text-gray-600 mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                      No new matches yet
+                    </h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-6">
+                      Keep your profile updated to get better matches!
+                    </p>
+                    <Button asChild>
+                      <Link href="/profile">Update Profile</Link>
+                    </Button>
+                  </div>
+                )}
+
+                {mockMatches.length > 0 && (
+                  <div className="mt-6">
+                    <Button asChild className="w-full">
+                      <Link href="/matches">View All Matches</Link>
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
