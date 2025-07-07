@@ -6,39 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-
-interface User {
-  id: string;
-  email: string;
-  role: "au_pair" | "host_family";
-  name: string;
-}
+import { useAuthStore } from "@/store/authStore";
 
 export default function OnboardingPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isAuthenticated, isLoading } = useAuthStore();
   const [formData, setFormData] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    // Check auth storage used by useAuthStore
-    const authData = localStorage.getItem("auth-storage");
-    if (authData) {
-      try {
-        const parsedData = JSON.parse(authData);
-        if (parsedData.state?.user && parsedData.state?.isAuthenticated) {
-          setUser(parsedData.state.user);
-        } else {
-          router.push("/auth/login");
-        }
-      } catch (error) {
-        console.error("Error parsing auth data:", error);
-        router.push("/auth/login");
-      }
-    } else {
+    if (!isLoading && !isAuthenticated) {
       router.push("/auth/login");
     }
-  }, [router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +35,12 @@ export default function OnboardingPage() {
     }
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (isLoading || !user)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
