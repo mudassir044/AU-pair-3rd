@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { useAuthStore } from "@/store/authStore";
 import {
   MessageCircle,
@@ -50,20 +56,21 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const token = localStorage.getItem('auth-token');
+      const token = localStorage.getItem("auth-token");
       if (!token) return;
 
-      const [statsResponse, matchesResponse, profileResponse] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/stats`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches/recent`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/completion`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-      ]);
+      const [statsResponse, matchesResponse, profileResponse] =
+        await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/stats`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/matches/recent`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/completion`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
@@ -80,7 +87,7 @@ export default function DashboardPage() {
         setProfileCompletion(profileData.completion || 0);
       }
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
+      console.error("Failed to fetch dashboard data:", error);
     }
   };
 
@@ -435,7 +442,7 @@ export default function DashboardPage() {
                     variant="outline"
                     className="w-full justify-start hover:bg-primary hover:text-white transition-colors"
                   >
-                    <Link href="/bookings">
+                    <Link href="/bookings/schedule">
                       <Calendar className="mr-2 h-4 w-4" />
                       Schedule Meeting
                     </Link>
@@ -445,7 +452,7 @@ export default function DashboardPage() {
                     variant="outline"
                     className="w-full justify-start hover:bg-primary hover:text-white transition-colors"
                   >
-                    <Link href="/documents">
+                    <Link href="/documents/upload">
                       <FileText className="mr-2 h-4 w-4" />
                       Upload Documents
                     </Link>
