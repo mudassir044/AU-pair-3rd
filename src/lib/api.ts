@@ -7,24 +7,17 @@ export const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 // Add request interceptor to include auth token
 api.interceptors.request.use(
   (config) => {
-    if (typeof window !== 'undefined') {
-      const user = localStorage.getItem("user");
-      if (user) {
-        try {
-          const userData = JSON.parse(user);
-          if (userData.token) {
-            config.headers.Authorization = `Bearer ${userData.token}`;
-          }
-        } catch (error) {
-          console.error('Error parsing user data from localStorage:', error);
-        }
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
     }
     return config;
@@ -40,9 +33,9 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized access
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('user');
-        window.location.href = '/auth/login';
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user");
+        window.location.href = "/auth/login";
       }
     }
     return Promise.reject(error);
