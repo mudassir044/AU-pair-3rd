@@ -107,6 +107,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (userData: any) => {
         set({ isLoading: true });
         try {
+          console.log("Registering user with data:", userData);
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
             {
@@ -120,10 +121,12 @@ export const useAuthStore = create<AuthState>()(
 
           if (!response.ok) {
             const errorData = await response.json();
+            console.error("Registration failed:", errorData);
             throw new Error(errorData.message || "Registration failed");
           }
 
           const data = await response.json();
+          console.log("Registration successful:", data);
 
           set({
             user: data.user,
@@ -136,7 +139,10 @@ export const useAuthStore = create<AuthState>()(
           if (typeof window !== "undefined") {
             localStorage.setItem("auth-token", data.token);
           }
+
+          console.log("Auth state updated after registration");
         } catch (error) {
+          console.error("Registration error:", error);
           set({ isLoading: false });
           throw error;
         }
