@@ -502,7 +502,10 @@ export default function DashboardPage() {
                   >
                     <Link href="/messages">
                       <MessageCircle className="mr-2 h-4 w-4" />
-                      Check Messages ({mockStats.unreadMessages})
+                      Check Messages{" "}
+                      {displayStats.unreadMessages > 0
+                        ? `(${displayStats.unreadMessages})`
+                        : ""}
                     </Link>
                   </Button>
                   <Button
