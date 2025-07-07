@@ -270,7 +270,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Profile Completion Banner */}
-        {mockStats.profileCompletion < 100 && (
+        {displayStats.profileCompletion < 100 && (
           <Card className="mb-8 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-950 dark:to-blue-950 border-primary/20">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
@@ -283,8 +283,8 @@ export default function DashboardPage() {
                       Complete your profile
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Your profile is {mockStats.profileCompletion}% complete.
-                      Finish it to get better matches!
+                      Your profile is {displayStats.profileCompletion}%
+                      complete. Finish it to get better matches!
                     </p>
                   </div>
                 </div>
@@ -296,7 +296,7 @@ export default function DashboardPage() {
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div
                     className="bg-gradient-to-r from-primary to-blue-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${mockStats.profileCompletion}%` }}
+                    style={{ width: `${displayStats.profileCompletion}%` }}
                   ></div>
                 </div>
               </div>
