@@ -36,6 +36,33 @@ export const useAuthStore = create<AuthState>()(
       initialized: false,
 
       initialize: () => {
+        if (typeof window !== "undefined") {
+          // Get stored auth data
+          const storedState = localStorage.getItem("auth-storage");
+          const token = localStorage.getItem("auth-token");
+
+          if (storedState && token) {
+            try {
+              const parsedState = JSON.parse(storedState);
+              if (
+                parsedState.state?.user &&
+                parsedState.state?.isAuthenticated
+              ) {
+                set({
+                  user: parsedState.state.user,
+                  token: parsedState.state.token || token,
+                  isAuthenticated: true,
+                  initialized: true,
+                });
+                return;
+              }
+            } catch (error) {
+              console.error("Error restoring auth state:", error);
+              localStorage.removeItem("auth-storage");
+              localStorage.removeItem("auth-token");
+            }
+          }
+        }
         set({ initialized: true });
       },
 
@@ -80,6 +107,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (userData: any) => {
         set({ isLoading: true });
         try {
+          console.log("Registering user with data:", userData);
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
             {
@@ -93,10 +121,12 @@ export const useAuthStore = create<AuthState>()(
 
           if (!response.ok) {
             const errorData = await response.json();
+            console.error("Registration failed:", errorData);
             throw new Error(errorData.message || "Registration failed");
           }
 
           const data = await response.json();
+          console.log("Registration successful:", data);
 
           set({
             user: data.user,
@@ -109,7 +139,10 @@ export const useAuthStore = create<AuthState>()(
           if (typeof window !== "undefined") {
             localStorage.setItem("auth-token", data.token);
           }
+
+          console.log("Auth state updated after registration");
         } catch (error) {
+          console.error("Registration error:", error);
           set({ isLoading: false });
           throw error;
         }

@@ -121,7 +121,9 @@ function RegisterForm() {
         role: selectedRole,
       };
 
+      console.log("Starting registration process...");
       await registerUser(userData);
+      console.log("Registration completed, redirecting to onboarding...");
       router.push("/onboarding");
       router.refresh();
     } catch (error: any) {
