@@ -485,7 +485,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Actions & Recent Activity */}
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
