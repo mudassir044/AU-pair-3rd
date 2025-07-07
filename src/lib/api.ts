@@ -34,7 +34,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Handle unauthorized access
       if (typeof window !== "undefined") {
-        localStorage.removeItem("user");
+        localStorage.removeItem("auth-token");
+        localStorage.removeItem("auth-storage");
         window.location.href = "/auth/login";
       }
     }
