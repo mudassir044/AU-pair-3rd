@@ -132,11 +132,11 @@ export default function DashboardPage() {
     return "Good evening";
   };
 
-  const mockStats = {
-    newMatches: 12,
-    unreadMessages: 3,
-    upcomingMeetings: 2,
-    profileCompletion: profileCompletion || 85,
+  const displayStats = {
+    newMatches: stats.newMatches || 0,
+    unreadMessages: stats.unreadMessages || 0,
+    upcomingMeetings: stats.upcomingMeetings || 0,
+    profileCompletion: profileCompletion || 35,
   };
 
   const mockMatches = [
@@ -313,11 +313,17 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-red-600">
-                {mockStats.newMatches}
+                {displayStats.newMatches}
               </div>
               <p className="text-xs text-muted-foreground flex items-center mt-1">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +2 from last week
+                {displayStats.newMatches > 0 ? (
+                  <>
+                    <TrendingUp className="w-3 h-3 mr-1" />
+                    +2 from last week
+                  </>
+                ) : (
+                  "Keep your profile updated!"
+                )}
               </p>
             </CardContent>
           </Card>
@@ -329,10 +335,12 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-blue-600">
-                {mockStats.unreadMessages}
+                {displayStats.unreadMessages}
               </div>
               <p className="text-xs text-muted-foreground">
-                Unread conversations
+                {displayStats.unreadMessages > 0
+                  ? "Unread conversations"
+                  : "No unread messages"}
               </p>
             </CardContent>
           </Card>
@@ -344,9 +352,13 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-green-600">
-                {mockStats.upcomingMeetings}
+                {displayStats.upcomingMeetings}
               </div>
-              <p className="text-xs text-muted-foreground">This week</p>
+              <p className="text-xs text-muted-foreground">
+                {displayStats.upcomingMeetings > 0
+                  ? "This week"
+                  : "No meetings scheduled"}
+              </p>
             </CardContent>
           </Card>
 
@@ -357,9 +369,13 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-purple-600">
-                {mockStats.profileCompletion}%
+                {displayStats.profileCompletion}%
               </div>
-              <p className="text-xs text-muted-foreground">Completion rate</p>
+              <p className="text-xs text-muted-foreground">
+                {displayStats.profileCompletion < 100
+                  ? "Needs completion"
+                  : "Complete"}
+              </p>
             </CardContent>
           </Card>
         </div>
