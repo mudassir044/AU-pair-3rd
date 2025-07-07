@@ -36,6 +36,33 @@ export const useAuthStore = create<AuthState>()(
       initialized: false,
 
       initialize: () => {
+        if (typeof window !== "undefined") {
+          // Get stored auth data
+          const storedState = localStorage.getItem("auth-storage");
+          const token = localStorage.getItem("auth-token");
+
+          if (storedState && token) {
+            try {
+              const parsedState = JSON.parse(storedState);
+              if (
+                parsedState.state?.user &&
+                parsedState.state?.isAuthenticated
+              ) {
+                set({
+                  user: parsedState.state.user,
+                  token: parsedState.state.token || token,
+                  isAuthenticated: true,
+                  initialized: true,
+                });
+                return;
+              }
+            } catch (error) {
+              console.error("Error restoring auth state:", error);
+              localStorage.removeItem("auth-storage");
+              localStorage.removeItem("auth-token");
+            }
+          }
+        }
         set({ initialized: true });
       },
 
