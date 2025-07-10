@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://au-pair.onrender.com/api";
+  process.env.NEXT_PUBLIC_API_URL || "https://au-pair.onrender.com";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -15,8 +15,23 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
+      // Get token from localStorage or Zustand store
+      let token = localStorage.getItem("auth-token");
+
+      // If no token in localStorage, try to get from Zustand store
+      if (!token) {
+        const storedState = localStorage.getItem("auth-storage");
+        if (storedState) {
+          try {
+            const parsedState = JSON.parse(storedState);
+            token = parsedState.state?.token;
+          } catch (error) {
+            console.error("Error parsing auth state:", error);
+          }
+        }
+      }
+
+      if (token && token !== "null" && token !== "undefined") {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
